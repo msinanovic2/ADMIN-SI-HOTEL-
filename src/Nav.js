@@ -1,12 +1,9 @@
 import React from 'react'
-import { PageHeader, Button, Descriptions } from 'antd';
+import { PageHeader, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import { AuthService} from './AuthService'
 class Nav extends React.Component{
-    constructor(props) {
-        super(props);
-    
-    }
+  
     render(){
     if(this.props.LoggedIn)
         return (

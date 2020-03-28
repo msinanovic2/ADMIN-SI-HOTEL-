@@ -27,7 +27,7 @@ const NormalLoginForm = () => {
     fetch("https://main-server-si.herokuapp.com/api/auth/login", requestOptions)
       .then(response => response.json())
       .then(result => {
-        if(result.token!=undefined){
+        if(result.token!==undefined){
         AuthService.storeToken(result);
         window.location.href = "/";
         }
