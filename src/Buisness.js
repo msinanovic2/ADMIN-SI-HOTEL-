@@ -9,7 +9,7 @@ function Business (){
     getAllBuisness();
   },[]);
   function addOffice(business){
-
+    this.props.history.push(`/business/${business.id}/office/add`)
 
   }
   const [allBusiness,setBusiness] = useState([]);
