@@ -1,13 +1,21 @@
 import React from 'react'
 import { Button } from 'antd'
-import {AuthService} from './AuthService'
 class HomePage extends React.Component{
 
     render(){
                 return (
-                    <Button className = "Logout" onClick = {(event)=>{
-                        AuthService.logout();
-                    }} name="LogOut">LogOut {AuthService.getToken}</Button>
+                     <div>
+                        <Button type="primary" block onClick={(event)=>this.props.history.push("/merchant/add")}>
+                          Add Merchant
+                        </Button>
+                        <Button block>Default</Button>
+                        <Button type="dashed" block>
+                          Dashed
+                        </Button>
+                        <Button type="link" block>
+                          Link
+                        </Button>
+                      </div>
                 )
     }
 
