@@ -12,6 +12,9 @@ import BusinessPreview from './BusinessPreview'
 import OfficePreview from './OfficePreview'
 import User from './User'
 import UserPreview from './UserPreview'
+import BusinessAdd from './BusinessAdd'
+import OfficeAdd from './OfficeAdd'
+import MerchantAdd from './MerchantAdd'
 
 
 class App extends React.Component {
@@ -30,16 +33,19 @@ class App extends React.Component {
   render(){  
     return (<div>           
               <Router  history= {history}>
-                 { this.state.currentUser?<Nav LoggedIn = {true}/>:<Nav LoggedIn = {false}/> }
+                 { this.state.currentUser?<Nav LoggedIn = {true} history={history}/>:<Nav LoggedIn = {false} history = {history}/> }
                 <div className="App">
                       <PrivateRoute exact path="/" component={HomePage} />
                       <PrivateRoute exact path= "/Business" component= {Buisness}/>
                       <Route path="/login" component={Login} /> 
-                      <PrivateRoute path= "/business/edit/:id" component ={HomePage}/>
+                      <PrivateRoute path= "/business/edit/:id" component ={HomePage }/>
                       <PrivateRoute path= "/business/details/:id" component = {BusinessPreview}/>
                       <PrivateRoute path = "/business/:bid/office/details/:oid" component = {OfficePreview}/>
+                      <PrivateRoute path = "/business/add/:mid" component = {BusinessAdd}/>
+                      <PrivateRoute path ="/business/:bid/office/add" component={OfficeAdd}/>
                       <PrivateRoute path = "/users" component = {User}/> 
-                      <PrivateRoute path= "/user/details/:id" component = {UserPreview}/>      
+                      <PrivateRoute path= "/user/details/:id" component = {UserPreview}/>
+                      <PrivateRoute path = "/merchant/add" component = {MerchantAdd}/> 
                 </div>
               </Router>
            </div>);

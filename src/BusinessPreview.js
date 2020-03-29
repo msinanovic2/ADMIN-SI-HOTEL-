@@ -1,10 +1,17 @@
-import { Descriptions,Badge,Table } from 'antd';
+import { Descriptions,Badge,Table, Button } from 'antd';
 import React,{useState,useEffect} from 'react'
 import {AuthService} from './AuthService'
 import {Link} from 'react-router-dom'
 
 
 function BusinessPreview({match}){
+    function deleteCashRegister(office){
+    }
+    function addCashRegister(office){
+    }
+    function deleteOffice(record){
+
+    }
     useEffect(()=>{
       getBuisness();
     },[]);
@@ -58,6 +65,33 @@ function BusinessPreview({match}){
         key:'cashRegisters',
         render: cashRegisters=>{
              return cashRegisters.length;
+        }
+      }, {
+        title :'Add Cash Register',
+        key:'addCashRegisters',
+        render: (text,record)=>{
+             //record je office
+             return <Button type="primary" onClick={(record)=>{addCashRegister(record)}}> 
+               Add Cash Register for {record.id}
+             </Button>
+        }
+      }, {
+        title :'Delete Cash Register',
+        key:'delete',
+        render: (text,record)=>{
+          //record je office
+           return <Button type="primary" danger onClick={(record)=>{deleteCashRegister(record)}}> 
+             Delete Cash Register for {record.id}
+           </Button>
+        },
+      },{
+        title :'Delete Office',
+        key:'deleteOffice',
+        render: (text,record)=>{
+          //record je office
+           return <Button type="primary" danger onClick={(record)=>{deleteOffice(record)}}> 
+             Delete Office {record.id}
+           </Button>
         }
       },
       {

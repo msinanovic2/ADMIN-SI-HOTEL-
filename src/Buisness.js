@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from 'react'
-import { Table } from 'antd';
+import { Table,Button } from 'antd';
 import { Link } from 'react-router-dom';
 import {AuthService} from './AuthService'
 
@@ -8,7 +8,10 @@ function Business (){
   useEffect(()=>{
     getAllBuisness();
   },[]);
+  function addOffice(business){
+    this.props.history.push(`/business/${business.id}/office/add`)
 
+  }
   const [allBusiness,setBusiness] = useState([]);
     
   async function getAllBuisness(){
@@ -49,6 +52,15 @@ function Business (){
           key:'offices',
           render: offices=>{
                return offices.length;
+          }
+        },{
+          title :'Add Office',
+          key:'addOffice',
+          render: (text,record)=>{
+               //record je Business
+               return <Button type="primary" onClick={(record)=>{addOffice(record)}}> 
+                 Add Office for {record.name}
+               </Button>
           }
         },
         {
