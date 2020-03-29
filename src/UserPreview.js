@@ -29,14 +29,14 @@ async function  getUser()  {
     const data = await fetch("https://main-server-si.herokuapp.com/api/users", requestOptions);
     const users = await data.json();
     users.map((x)=>{
-        if(x.id == match.params.oid)
+        if(x.userId == match.params.id)
              setCurrentUser(x);
     })
 }
    
     return (
         <Descriptions title="User Info" bordered>
-          <Descriptions.Item label="Id">{currentUser.id}</Descriptions.Item>
+          <Descriptions.Item label="Id">{currentUser.userId}</Descriptions.Item>
           <Descriptions.Item label="Name">{currentUser.name}</Descriptions.Item>
           <Descriptions.Item label="Surame">{currentUser.surname}</Descriptions.Item>
           <Descriptions.Item label="Username">{currentUser.username}</Descriptions.Item>

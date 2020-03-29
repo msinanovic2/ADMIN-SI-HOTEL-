@@ -26,8 +26,8 @@ function User (){
     const columns = [
         {
           title: 'Id',
-          dataIndex: 'id',
-          key: 'id', 
+          dataIndex: 'userId',
+          key: 'userId', 
           render: text => <a>{text}</a>,
         },
         {
@@ -53,7 +53,7 @@ function User (){
           title: 'Edit',
           key: 'Edit',
           render: (text, record) => (
-            <Link key={record.merchantId} to={"/user/edit/"+record.id}>
+            <Link key={record.userId} to={"/user/edit/"+record.userId}>
              Edit {record.name}
             </Link>
           ),
@@ -62,7 +62,7 @@ function User (){
             title: 'Details',
             key: 'Details',
             render: (text, record) => (
-              <Link to={"/user/details/"+record.id}>
+              <Link to={"/user/details/"+record.userId}>
                See {record.name}
               </Link>
             ),
