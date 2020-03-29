@@ -7,7 +7,11 @@ import HomePage from './HomePage'
 import {PrivateRoute} from './PrivateRouter'
 import {history} from './History'
 import  Nav  from './Nav';
-import Merch from './Merch'
+import Buisness from './Buisness'
+import BusinessPreview from './BusinessPreview'
+import OfficePreview from './OfficePreview'
+import User from './User'
+import UserPreview from './UserPreview'
 
 
 class App extends React.Component {
@@ -29,10 +33,13 @@ class App extends React.Component {
                  { this.state.currentUser?<Nav LoggedIn = {true}/>:<Nav LoggedIn = {false}/> }
                 <div className="App">
                       <PrivateRoute exact path="/" component={HomePage} />
-                      <PrivateRoute exact path= "/merch" component= {Merch}/>
+                      <PrivateRoute exact path= "/Business" component= {Buisness}/>
                       <Route path="/login" component={Login} /> 
-                      <PrivateRoute path= "/merch/edit/:id" component ={HomePage}/>
-                      <PrivateRoute path= "/merch/details/:id" component = {HomePage}/>  
+                      <PrivateRoute path= "/business/edit/:id" component ={HomePage}/>
+                      <PrivateRoute path= "/business/details/:id" component = {BusinessPreview}/>
+                      <PrivateRoute path = "/business/:bid/office/details/:oid" component = {OfficePreview}/>
+                      <PrivateRoute path = "/users" component = {User}/> 
+                      <PrivateRoute path= "/user/details/:id" component = {UserPreview}/>      
                 </div>
               </Router>
            </div>);

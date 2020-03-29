@@ -14,8 +14,8 @@ class Nav extends React.Component{
                     title="Admin Web App"
                     subTitle="This is a subtitle"
                     extra={[
-                        <Link to="/merch"> Merch</Link>,
-                        <Link to="/warehous"> Shop</Link>,
+                        <Link to="/business"> Business</Link>,
+                        <Link to="/users"> User</Link>,
                         <Link to="/"> Stores</Link>,
                         <Button key="1" type="primary"  onClick = {(event)=>{
                             AuthService.logout();
