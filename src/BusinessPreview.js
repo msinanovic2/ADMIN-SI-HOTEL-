@@ -5,40 +5,78 @@ import {Link} from 'react-router-dom'
 
 
 function BusinessPreview({match}){
-    function deleteCashRegister(office){
-    }
-    function addCashRegister(office){
-    }
-    function deleteOffice(record){
+    //REQUESTS
+  async function addCashRegisterRequest(BusinessId,OfficeId){
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization",AuthService.currentHeaderValue);
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+    };
+    let idCR;
+    await fetch(`https://main-server-si.herokuapp.com/api/business/${BusinessId}/offices/${OfficeId}/cashRegisters`, requestOptions).then(response => response.json())
+    .then(result => 
+     idCR = {...result.id}
+     )
+     return idCR;
+  }
 
-    }
-    useEffect(()=>{
-      getBuisness();
-    },[]);
-   const [currentBusiness,setCurrentBusiness] = useState(
-     {id:"1",
-     name:"Test",
-     offices :[{
-        id:"1",
-        address:"",
-        phoneNumber:"",
-        city:"",
-        cashRegisters:[]
-     }],
-     restaurantFeature:false, merchant:{name:"",surname:""}});
-   async function  getBuisness()  {
+
+  async function  getBuisness()  {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization",AuthService.currentHeaderValue);
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+    };
+    const data = await fetch("https://main-server-si.herokuapp.com/api/business/"+match.params.id, requestOptions)
+    setCurrentBusiness( await data.json());
+}
+
+   async function deleteCashRegisterRequest(BusinessId,OfficeId,CashRegisterId){
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append("Authorization",AuthService.currentHeaderValue);
         var requestOptions = {
-          method: 'GET',
+          method: 'DELETE',
           headers: myHeaders,
-        };
-        const data = await fetch("https://main-server-si.herokuapp.com/api/business/"+match.params.id, requestOptions)
-        setCurrentBusiness( await data.json());
-        console.log(currentBusiness);
+      };
+      const data = await fetch(`https://main-server-si.herokuapp.com/api/business/${BusinessId}/offices/${OfficeId}/cashRegisters/${CashRegisterId}`, requestOptions)
+      return data;
+   }
+   //FUNCTIONS
+  async function deleteCashRegister(office){
+        if(office.cashRegisters.length<=0)
+          return
+        const Business2 = {...currentBusiness}
+        const selectedOffice = Business2.offices.find((x)=>x.id == office.id)
+        const cashRegisterId =  selectedOffice.cashRegisters.pop().id;
+        deleteCashRegisterRequest(match.params.id,office.id,cashRegisterId);
+        setCurrentBusiness(Business2);
     }
-    const columns = [
+
+
+  async function addCashRegister(office){
+      const Business2 = {...currentBusiness};
+      const selectedOffice = Business2.offices.find((x)=>x.id == office.id)
+      const idCR = addCashRegisterRequest(match.params.id,office.id) 
+      selectedOffice.cashRegisters.push({id:idCR});
+      setCurrentBusiness(Business2);    
+  }
+
+  async  function deleteOffice(record){
+
+  }
+
+
+
+
+  useEffect(()=>{  getBuisness(); },[]);
+  const [currentBusiness,setCurrentBusiness] = useState({id:"1",name:"Test",offices :[{id:"1",address:"",phoneNumber:"",city:"",cashRegisters:[]}],restaurantFeature:false, merchant:{name:"",surname:""}});
+  
+  const columns = [
       {
         title: 'Id',
         dataIndex: 'id',
@@ -71,7 +109,7 @@ function BusinessPreview({match}){
         key:'addCashRegisters',
         render: (text,record)=>{
              //record je office
-             return <Button type="primary" onClick={(record)=>{addCashRegister(record)}}> 
+             return <Button type="primary" onClick={(event)=>{addCashRegister({...record})}}> 
                Add Cash Register for {record.id}
              </Button>
         }
@@ -80,7 +118,7 @@ function BusinessPreview({match}){
         key:'delete',
         render: (text,record)=>{
           //record je office
-           return <Button type="primary" danger onClick={(record)=>{deleteCashRegister(record)}}> 
+           return <Button type={record.cashRegisters.length >0? "primary":"disabled"} danger onClick={(event)=>{deleteCashRegister({...record})}}> 
              Delete Cash Register for {record.id}
            </Button>
         },
@@ -89,7 +127,7 @@ function BusinessPreview({match}){
         key:'deleteOffice',
         render: (text,record)=>{
           //record je office
-           return <Button type="primary" danger onClick={(record)=>{deleteOffice(record)}}> 
+           return <Button type="primary" danger  onClick={(event)=>{deleteOffice({...record})}}> 
              Delete Office {record.id}
            </Button>
         }
@@ -106,7 +144,7 @@ function BusinessPreview({match}){
       {
           title: 'Details',
           key: 'Details',
-          render: (text, record) => (
+          render: (text, record) => (    
             <Link to={`/business/${match.params.id}/office/details/`+record.id}>
              See {record.name}
             </Link>
