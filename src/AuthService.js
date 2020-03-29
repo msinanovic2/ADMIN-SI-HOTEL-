@@ -8,9 +8,7 @@ const currentTokenSubject = new BehaviorSubject(localStorage.getItem('token'));
 export const AuthService ={
     get currentHeaderValue(){
         const token = localStorage.getItem("token");
-        if(token)
-            return {Authorization: "Bearer "+token}
-        return {};
+        return token?"Bearer "+token:null;
     },
     storeToken,
     logout,
