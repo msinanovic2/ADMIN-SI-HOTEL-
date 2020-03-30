@@ -57,7 +57,10 @@ const validateMessages = {
           console.log(result)
         if(result.id!=undefined){
             props.history.push("/business/add/"+result.profile.id);
-        }
+        }else if(result.message == "Username already taken"){
+          alert("Username already taken");
+        }else if (result.message == "Email Address already in use!")
+          alert("Email Address already in use!")
         else{
          console.log("Error")
         }
