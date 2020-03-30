@@ -40,8 +40,8 @@ function User (){
           key: 'surname',
         },
         {
-          title: 'Surname',
-          dataIndex: 'surname',
+          title: 'Username',
+          dataIndex: 'username',
           key: 'surname',
         },
         {

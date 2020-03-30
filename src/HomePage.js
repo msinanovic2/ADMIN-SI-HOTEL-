@@ -6,15 +6,9 @@ class HomePage extends React.Component{
                 return (
                      <div>
                         <Button type="primary" block onClick={(event)=>this.props.history.push("/merchant/add")}>
-                          Add Merchant
+                          Add Merchant and Business
                         </Button>
-                        <Button block>Default</Button>
-                        <Button type="dashed" block>
-                          Dashed
-                        </Button>
-                        <Button type="link" block>
-                          Link
-                        </Button>
+                     
                       </div>
                 )
     }
