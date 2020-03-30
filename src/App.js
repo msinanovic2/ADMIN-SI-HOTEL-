@@ -16,6 +16,7 @@ import BusinessAdd from './BusinessAdd'
 import OfficeAdd from './OfficeAdd'
 import MerchantAdd from './MerchantAdd'
 import BusinessEdit from './BusinessEdit'
+import UserPassword from './UserPassword'
 
 
 class App extends React.Component {
@@ -46,6 +47,7 @@ class App extends React.Component {
                       <PrivateRoute path ="/business/:bid/office/add" component={OfficeAdd}/>
                       <PrivateRoute path = "/users" component = {User}/> 
                       <PrivateRoute path= "/user/details/:id" component = {UserPreview}/>
+                      <PrivateRoute path= "/user/password/:id" component = {UserPassword}/>  
                       <PrivateRoute path = "/merchant/add" component = {MerchantAdd } history ={history}/> 
                 </div>
               </Router>
