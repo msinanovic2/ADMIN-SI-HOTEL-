@@ -3,15 +3,13 @@ import { Table,Button } from 'antd';
 import { Link } from 'react-router-dom';
 import {AuthService} from './AuthService'
 
-function Business (){
+function Business (props){
   
   useEffect(()=>{
     getAllBuisness();
   },[]);
-  function addOffice(business){
-    this.props.history.push(`/business/${business.id}/office/add`)
-
-  }
+  
+   
   const [allBusiness,setBusiness] = useState([]);
     
   async function getAllBuisness(){
@@ -53,22 +51,14 @@ function Business (){
           render: offices=>{
                return offices.length;
           }
-        },{
+        },
+        
+        {
           title :'Add Office',
           key:'addOffice',
-          render: (text,record)=>{
-               //record je Business
-               return <Button type="primary" onClick={(record)=>{addOffice(record)}}> 
-                 Add Office for {record.name}
-               </Button>
-          }
-        },
-        {
-          title: 'Edit',
-          key: 'Edit',
           render: (text, record) => (
-            <Link key={record.merchantId} to={"/business/edit/"+record.id}>
-             Edit {record.name}
+            <Link key={record.merchantId} to={`/business/${record.id}/office/add`}>
+             Add Office for {record.name}
             </Link>
           ),
         },

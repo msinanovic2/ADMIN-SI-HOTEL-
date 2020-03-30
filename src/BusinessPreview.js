@@ -46,6 +46,28 @@ function BusinessPreview({match}){
       const data = await fetch(`https://main-server-si.herokuapp.com/api/business/${BusinessId}/offices/${OfficeId}/cashRegisters/${CashRegisterId}`, requestOptions)
       return data;
    }
+
+
+
+
+  async function deleteOfficeRequest(BusinessId,OfficeId){
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization",AuthService.currentHeaderValue);
+    var requestOptions = {
+      method: 'DELETE',
+      headers: myHeaders,
+  };
+  await fetch(`https://main-server-si.herokuapp.com/api/business/${BusinessId}/offices/${OfficeId}`, requestOptions)
+  .then(response=>response.json()).then(record=>{
+    if(record.message=="Office successfully deleted!"){
+      const Business2 = {...currentBusiness}
+      Business2.offices=Business2.offices.filter((value)=>
+     {return value.id!=OfficeId})
+      setCurrentBusiness(Business2);
+    }
+  })
+}
    //FUNCTIONS
   async function deleteCashRegister(office){
         if(office.cashRegisters.length<=0)
@@ -67,7 +89,7 @@ function BusinessPreview({match}){
   }
 
   async  function deleteOffice(record){
-
+        deleteOfficeRequest(match.params.id,record.id)
   }
 
 
