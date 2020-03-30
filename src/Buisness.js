@@ -8,9 +8,24 @@ function Business (props){
   useEffect(()=>{
     getAllBuisness();
   },[]);
-  
-   
   const [allBusiness,setBusiness] = useState([]);
+  function ChangeRestaurant(business) {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization",AuthService.currentHeaderValue);
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+    };
+    fetch(`https://main-server-si.herokuapp.com/api/business/${business.id}/restaurant`, requestOptions);
+    const allBusiness2 = allBusiness.slice();
+    const changedBusiness = allBusiness2.find((x)=>x.id==business.id);
+    console.log(changedBusiness);
+    changedBusiness.restaurantFeature = !changedBusiness.restaurantFeature;
+    console.log(changedBusiness);
+    setBusiness(allBusiness2);
+
+  } 
     
   async function getAllBuisness(){
     var myHeaders = new Headers();
@@ -69,6 +84,17 @@ function Business (props){
               <Link to={"/business/details/"+record.id}>
                See {record.name}
               </Link>
+            ),
+          },
+          {
+            title: 'Change Restaurant Feature',
+            key: 'changeRestaurantFeature',
+            render: (text, record) => (
+              <Button type="primary" onClick={(event)=>{
+                ChangeRestaurant({...record})
+              }}>
+                Change Restaurant Feature for {record.name}
+              </Button>
             ),
           },
       ];
