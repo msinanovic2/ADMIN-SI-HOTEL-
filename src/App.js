@@ -17,6 +17,9 @@ import OfficeAdd from './OfficeAdd'
 import MerchantAdd from './MerchantAdd'
 import BusinessEdit from './BusinessEdit'
 import UserPassword from './UserPassword'
+import NotificationsList from './NotificationList'
+import ChangePassword from './ChangePassword'
+import UserRoles from './UserRoles'
 
 
 class App extends React.Component {
@@ -48,7 +51,10 @@ class App extends React.Component {
                       <PrivateRoute path = "/users" component = {User}/> 
                       <PrivateRoute path= "/user/details/:id" component = {UserPreview}/>
                       <PrivateRoute path= "/user/password/:id" component = {UserPassword}/>  
-                      <PrivateRoute path = "/merchant/add" component = {MerchantAdd } history ={history}/> 
+                      <PrivateRoute path = "/merchant/add" component = {MerchantAdd } history ={history}/>
+                      <PrivateRoute path ="/notifications" component = {NotificationsList}/>
+                      <PrivateRoute path = "/changepassword"  component = {ChangePassword}/>
+                      <PrivateRoute path = "/user/roles/:id" component = {UserRoles}/>
                 </div>
               </Router>
            </div>);
