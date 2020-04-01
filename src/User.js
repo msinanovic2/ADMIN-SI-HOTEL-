@@ -74,6 +74,14 @@ function User (){
                 Reset password for {record.username}
               </Link>
             ),
+          }, {
+            title: 'Change Role',
+            key: 'changeRple',
+            render: (text, record) => (
+              <Link to={"/user/roles/"+record.userId}>
+               Change Role for {record.name}
+              </Link>
+            ),
           },
       ];
       

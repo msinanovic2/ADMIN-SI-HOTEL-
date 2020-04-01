@@ -17,6 +17,7 @@ class Nav extends React.Component{
                         <Link to="/business" key= "Business"> Business</Link>,
                         <Link to="/users" key = "Users"> User</Link>,
                         <Link to="/" key="home"> Home</Link>,
+                        <Link to ="/notifications" key = "notifications">Notifications</Link>,
                         <Button key="1" type="primary"  onClick = {(event)=>{
                             AuthService.logout();
                             this.props.history.push("/login");
