@@ -4,7 +4,7 @@ import {AuthService} from './AuthService'
 import {Link} from 'react-router-dom'
 
 
-function BusinessPreview({match}){
+function BusinessPreview(props){
     //REQUESTS
   async function addCashRegisterRequest(BusinessId,OfficeId){
     var myHeaders = new Headers();
@@ -31,7 +31,7 @@ function BusinessPreview({match}){
       method: 'GET',
       headers: myHeaders,
     };
-    const data = await fetch("https://main-server-si.herokuapp.com/api/business/"+match.params.id, requestOptions)
+    const data = await fetch("https://main-server-si.herokuapp.com/api/business/"+props.match.params.id, requestOptions)
     setCurrentBusiness( await data.json());
 }
 
@@ -75,21 +75,17 @@ function BusinessPreview({match}){
         const Business2 = {...currentBusiness}
         const selectedOffice = Business2.offices.find((x)=>x.id == office.id)
         const cashRegisterId =  selectedOffice.cashRegisters.pop().id;
-        deleteCashRegisterRequest(match.params.id,office.id,cashRegisterId);
+        deleteCashRegisterRequest(props.match.params.id,office.id,cashRegisterId);
         setCurrentBusiness(Business2);
     }
 
 
   async function addCashRegister(office){
-      const Business2 = {...currentBusiness};
-      const selectedOffice = Business2.offices.find((x)=>x.id == office.id)
-      const idCR = addCashRegisterRequest(match.params.id,office.id) 
-      selectedOffice.cashRegisters.push({id:idCR});
-      setCurrentBusiness(Business2);    
+      props.history.push(`/business/${props.match.params.id}/office/${office.id}/cashregister/add`);    
   }
 
   async  function deleteOffice(record){
-        deleteOfficeRequest(match.params.id,record.id)
+        deleteOfficeRequest(props.match.params.id,record.id)
   }
 
 
@@ -135,16 +131,18 @@ function BusinessPreview({match}){
                Add Cash Register for {record.id}
              </Button>
         }
-      }, {
-        title :'Delete Cash Register',
-        key:'delete',
-        render: (text,record)=>{
-          //record je office
-           return <Button type={record.cashRegisters.length >0? "primary":"disabled"} danger onClick={(event)=>{deleteCashRegister({...record})}}> 
-             Delete Cash Register for {record.id}
-           </Button>
-        },
-      },{
+      },
+      //  {
+      //   title :'Delete Cash Register',
+      //   key:'delete',
+      //   render: (text,record)=>{
+      //     //record je office
+      //      return <Button type={record.cashRegisters.length >0? "primary":"disabled"} danger onClick={(event)=>{deleteCashRegister({...record})}}> 
+      //        Delete Cash Register for {record.id}
+      //      </Button>
+      //   },
+      // },
+      {
         title :'Delete Office',
         key:'deleteOffice',
         render: (text,record)=>{
@@ -158,7 +156,7 @@ function BusinessPreview({match}){
         title: 'Edit',
         key: 'Edit',
         render: (text, record) => (
-          <Link key={record.merchantId} to={`/business/${match.params.id}/office/edit/`+record.id}>
+          <Link key={record.merchantId} to={`/business/${props.match.params.id}/office/edit/`+record.id}>
            Edit {record.name}
           </Link>
         ),
@@ -167,7 +165,7 @@ function BusinessPreview({match}){
           title: 'Details',
           key: 'Details',
           render: (text, record) => (    
-            <Link to={`/business/${match.params.id}/office/details/`+record.id}>
+            <Link to={`/business/${props.match.params.id}/office/details/`+record.id}>
              See {record.name}
             </Link>
           ),
