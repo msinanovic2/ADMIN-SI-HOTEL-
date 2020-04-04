@@ -259,6 +259,9 @@ const columns = [
     console.log('search:', val);
   }
 
+  function checkRoles(){
+      return currentUser.roles.length == 0;
+  }
 
   console.log("final current user = " + JSON.stringify(currentUser));
 
@@ -304,7 +307,7 @@ return (
     <br></br>
 
     <div id="submit">
-    <Button type="primary" onClick={(e) => sendPutRequest(e)} block="true">Submit</Button>
+    <Button disabled = {checkRoles()} type="primary" onClick={(e) => sendPutRequest(e)} block="true">Submit</Button>
     </div>
 
 
