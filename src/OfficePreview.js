@@ -65,8 +65,24 @@ function OfficePreview({match}){
 		key: 'name',
 	  },
 	   {
+		title: 'View QR code',
+        key: 'qr',
+		render: (text, register)=>{
+          //register je office
+           return <Button type={register ? "primary":"disabled"}> 
+             View QR code
+           </Button>
+        },
+	   },
+	   {
 		title: 'Delete Cash Register',
         key: 'delete',
+		render: (text, register)=>{
+          //register je office
+           return <Button type={register ? "primary":"disabled"} danger> 
+             Delete Cash Register
+           </Button>
+        },
 	   },
 	];
    
@@ -84,10 +100,13 @@ function OfficePreview({match}){
 		  
         </Descriptions>
 		
-		<h3>
-          Cash Registers
-        </h3>
-		<Table columns={columns} dataSource={currentOffice.cashRegisters} pagination={false} />
+		<div>{currentOffice.cashRegisters.length > 0 ?
+			<div>
+				<h3>Cash Registers</h3>
+				<Table columns={columns} dataSource={currentOffice.cashRegisters} pagination={false} locale={{emptyText: " ",}}/> 
+			</div>
+			: null}			
+		</div>
 		</div>
     )
 }
