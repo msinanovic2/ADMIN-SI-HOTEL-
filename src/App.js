@@ -20,6 +20,7 @@ import UserPassword from './UserPassword'
 import NotificationsList from './NotificationList'
 import ChangePassword from './ChangePassword'
 import UserRoles from './UserRoles'
+import CashRegisterAdd from './CashRegisterAdd'
 
 
 class App extends React.Component {
@@ -55,6 +56,7 @@ class App extends React.Component {
                       <PrivateRoute path ="/notifications" component = {NotificationsList}/>
                       <PrivateRoute path = "/changepassword"  component = {ChangePassword}/>
                       <PrivateRoute path = "/user/roles/:id" component = {UserRoles}/>
+                      <PrivateRoute path = "/business/:bid/office/:oid/cashregister/add" component= {CashRegisterAdd}/>
                 </div>
               </Router>
            </div>);
