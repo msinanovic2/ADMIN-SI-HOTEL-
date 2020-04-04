@@ -55,13 +55,22 @@ function NotificationsList() {
         fetch(url, requestOptions)
             .then(response => response.json())
             .then(result => {
-                console.log(result)
-                if (result.id !== undefined) {
-                    window.location.href = "/";
-                }
-                else {
-                    console.log("Error")
-                }
+                alert("Uspješno dodan office");
+
+                //LINK/api/notifications/admin/read/{notificationId} (POST)
+
+                var requestOptions = {
+                    method: 'POST',
+                    headers: myHeaders
+                };
+                //LINK/api/business/{businessId} (GET)
+
+                let url = "https://main-server-si.herokuapp.com/api/notifications/admin/read/" + notifikacija.id;
+                fetch(url, requestOptions)
+                    .then(response => response.json())
+                    .then(result => {
+                        window.location.href = "/notifications";
+                    })
             })
     }
 
@@ -97,15 +106,16 @@ function NotificationsList() {
 
                 console.log(offices);
 
-                let officeId = null;
+                let officeId = notification.officeId;
+                let temp = false;
                 for (let i = 0; i < offices.length; i++) {
-                    if (offices[i].address === notification.office.address && offices[i].city === notification.office.city && offices[i].country === notification.office.country) {
-                        officeId = offices[i].id;
-                        break;
-                    }
+                    if (officeId === offices[i].id) temp = true;
                 }
 
-                if (officeId === null) console.log("Error, office not found");
+                if (!temp) {
+                    console.log("Error, office not found");
+                    alert("Error, office not found");
+                }
                 else {
                     //LINK/api/business/{businessId}/offices/{officeId} (DELETE)
 
@@ -118,11 +128,50 @@ function NotificationsList() {
                         .then(response => response.json())
                         .then(result => {
                             console.log(result);
+                            alert("Uspješno obrisan office");
+
+                            //LINK/api/notifications/admin/read/{notificationId} (POST)
+
+                            var requestOptions = {
+                                method: 'POST',
+                                headers: myHeaders
+                            };
+                            //LINK/api/business/{businessId} (GET)
+
+                            let url = "https://main-server-si.herokuapp.com/api/notifications/admin/read/" + notification.id;
+                            fetch(url, requestOptions)
+                                .then(response => response.json())
+                                .then(result => {
+                                    window.location.href = "/notifications";
+                                })
                         })
                 }
             })
 
     }
+
+
+    function reject(notificationId) {
+        console.log(notificationId);
+
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", AuthService.currentHeaderValue);
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders
+        };
+        //LINK/api/business/{businessId} (GET)
+
+        let url = "https://main-server-si.herokuapp.com/api/notifications/admin/read/" + notificationId;
+        fetch(url, requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                alert("Notification deleted");
+                window.location.href = "/notifications";
+            })
+    }
+
 
     const columns = [
         {
@@ -164,7 +213,7 @@ function NotificationsList() {
             title: 'Reject request',
             key: 'Reject',
             render: (text, record) => (
-                <Button type="primary" onClick={(event) => { console.log("KO moze") }}>
+                <Button type="primary" onClick={(event) => { reject(record.id); }}>
                     Reject
                 </Button>
             ),
