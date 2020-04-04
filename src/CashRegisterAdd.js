@@ -3,16 +3,8 @@ import { Form, Input, Button ,Switch} from 'antd';
 import {AuthService} from './AuthService'
 
 function CashRegisterAdd({match}){
-    const layout = {
-        labelCol: {
-          span: 8,
-        },
-        wrapperCol: {
-          span: 16,
-        },
-      };
-      const validateMessages = {
-        required: 'This field is required!',
+    const layout = {labelCol: {span: 8,},wrapperCol: {span: 16,},};
+      const validateMessages = {required: 'This field is required!',
         types: {
           email: 'Not a validate email!',
           number: 'Not a validate number!',
@@ -57,9 +49,5 @@ function CashRegisterAdd({match}){
       </Button>
     </Form.Item>
   </Form>
-
-
-
-
 }
 export default CashRegisterAdd
