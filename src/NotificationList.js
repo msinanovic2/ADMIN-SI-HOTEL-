@@ -15,23 +15,18 @@ function NotificationsList() {
             method: 'GET',
             headers: myHeaders,
         };
-        const data = await fetch("https://main-server-si.herokuapp.com/api/notifications/admin", requestOptions).then(response => {
-            //response.json()
-            console.log(response);
-        });
-        /*
-        const data3 = await fetch("https://main-server-si.herokuapp.com/api/notifications/admin/unread", requestOptions);
+        const data = await fetch("https://main-server-si.herokuapp.com/api/notifications/admin/unread", requestOptions);
+
         const notifications = await data.json();
-        const notificationsUnread = await data3.json();
         for (let i = 0; i < notifications.length; i++) {
             if (notifications[i].open) notifications[i].open = "Otvaranje office-a";
             else notifications[i].open = "Zatvaranje office-a";
         }
         setNotification(notifications);
         setTimeout(function () {
-            console.log("Poziv sve neprocitane notifikacije za admina: ", notificationsUnread);
+            console.log("Poziv sve neprocitane notifikacije za admina: ", notifications);
         }, 300);
-        */
+
     }
 
     function addOffice(notificationId) {
@@ -145,13 +140,13 @@ function NotificationsList() {
             dataIndex: 'open',
             key: 'open',
         },
-        {
+        /*{
             title: 'Office info',
             key: 'Edit',
             render: (text, record) => (
                 <a>Office info</a>
             ),
-        },
+        },*/
         {
             title: 'Accept request',
             key: 'Accept',
