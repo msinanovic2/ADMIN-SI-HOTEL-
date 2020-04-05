@@ -36,8 +36,7 @@ class Nav extends React.Component{
                     onBack={() => window.history.back()}
                     title="Admin Web App"
                     subTitle="This is a subtitle"
-                    extra={[
-                        ]}
+                    extra={[]}
                 >
                 </PageHeader>
             </div>

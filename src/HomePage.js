@@ -4,11 +4,13 @@ class HomePage extends React.Component{
 
     render(){
                 return (
-                     <div className = "Menu">
+                     <div className = "MenuHome">
                         <Button className="HomePageButton" type="primary" block onClick={(event)=>this.props.history.push("/merchant/add")}>
                           Add Merchant and Business
                         </Button>
-                      
+                        <br/>
+                        <br/>
+                                              
                         <Button className= "HomePageButton" type="primary" block onClick={(event)=>this.props.history.push("/changepassword")}>
                           Change my password
                         </Button>
