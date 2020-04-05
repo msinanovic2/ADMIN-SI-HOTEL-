@@ -1,7 +1,9 @@
 import React from 'react'
 import { Form, Input, Button ,Switch} from 'antd';
 import {AuthService} from './AuthService'
+import { TimePicker } from 'antd';
 
+const { RangePicker } = TimePicker;
 function OfficeAdd(props)
 {   //REQUSET
     function addOffice(values){
@@ -13,8 +15,11 @@ function OfficeAdd(props)
             "city":values.office.city,
             "address":values.office.address,
             "country":values.office.country,
-            "phoneNumber":values.office.phoneNumber
+            "phoneNumber":values.office.phoneNumber,
+            "workDayStart":values.office.time[0].format("kk:mm"),
+            "workDayEnd":values.office.time[1].format("kk:mm")
         });
+        console.log(raw);
         var requestOptions = {
           method: 'POST',
           headers: myHeaders,
@@ -74,9 +79,10 @@ const layout = {
         <Form.Item name={['office', 'phoneNumber']} label="Phone Number" rules={[{required: true,}]}>
           <Input />
         </Form.Item>
-        
-        
-        
+        <Form.Item name={['office', 'time']} label="Working hours" rules={[{required: true,}]}>
+          <RangePicker/>
+        </Form.Item>
+     
         <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }} >
           <Button type="primary" htmlType="submit">
             Submit

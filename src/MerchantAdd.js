@@ -1,6 +1,8 @@
 import React from 'react'
 import { Form, Input, Button ,Switch} from 'antd';
 import {AuthService} from './AuthService'
+import { DatePicker } from 'antd';
+
 function MerchantAdd(props){
     
    
@@ -31,8 +33,10 @@ const validateMessages = {
         "username":values.user.username,
         "password":values.user.password,
         "roles":[
-            {"rolename":"ROLE_MERCHANT"},
-            {"rolename":"ROLE_MANAGER"}
+            {"rolename":"ROLE_MERCHANT",
+            },{
+              "rolename":"ROLE_MANAGER"
+            }
         ],
         "email":values.user.email,
         "name":values.user.name,
@@ -40,10 +44,10 @@ const validateMessages = {
         "city":values.user.city,
         "address":values.user.address,
         "country":values.user.country,
-        "phoneNumber":values.user.phoneNumber
+        "phoneNumber":values.user.phoneNumber,
+        "dateOfBirth":values.user.dateOfBirth.format("DD.MM.YYYY"),
+        "jmbg":values.user.jmbg
     });
-    console.log(raw);
-    console.log(values)
     var requestOptions = {
       method: 'POST',
       headers: myHeaders,
@@ -96,8 +100,13 @@ const validateMessages = {
       <Form.Item name={['user', 'phoneNumber']} label="Phone Number" rules={[{required: true,}]}>
         <Input />
       </Form.Item>
-      
-      
+
+      <Form.Item name={['user', 'jmbg']} label="JMBG" rules={[{required: true,},{len:13,message:"JMBG must have 13 characters"}]}>
+        <Input />
+      </Form.Item>
+      <Form.Item name={['user', 'dateOfBirth']} label="Date of Birth" rules={[{required: true,}]}>
+        <DatePicker format={'DD.MM.YYYY'} />
+      </Form.Item>
       
       <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }} >
         <Button type="primary" htmlType="submit">
@@ -111,3 +120,10 @@ const validateMessages = {
 }
 
 export default MerchantAdd
+
+
+
+
+
+
+
