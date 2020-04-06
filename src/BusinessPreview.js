@@ -127,7 +127,10 @@ function BusinessPreview(props){
           key:'deleteOffice',
           render: (text,record)=>{
             //record je office
-             return <Button type="primary" danger  onClick={(event)=>{deleteOffice({...record})}}> 
+             return <Button type="primary" danger  onClick={(event)=>{
+              const check = window.confirm("Are you sure you want to permanently remove Office?");
+              if(check)
+               deleteOffice({...record})}}> 
                Delete Office
              </Button>
           }

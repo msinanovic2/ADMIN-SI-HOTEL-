@@ -160,7 +160,9 @@ async function  getUser()  {
 
 
 async function sendPutRequest(e) {
-
+    const check = window.confirm("Are you sure you want to change roles?");
+    if(!check)
+        return;
     
     // POST request using fetch with async/await
 
@@ -194,10 +196,7 @@ async function sendPutRequest(e) {
     else {
         console.log("Error in put request!");
     }
-    
-    
-
-
+    window.location.href = "/users";
 }
 
 

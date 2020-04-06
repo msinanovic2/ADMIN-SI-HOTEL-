@@ -97,8 +97,8 @@ function OfficePreview({match}){
         key: 'delete',
 		render: (text, register)=>{
            return <Button type={register ? "primary":"disabled"} onClick={(event)=>{
-             console.log("ispis")
-             console.log(register);
+            const check = window.confirm("Are you sure you want to permanently remove cash register?");
+            if(check)
              deleteCashRegister({...register})}} danger> 
              Delete Cash Register
            </Button>
