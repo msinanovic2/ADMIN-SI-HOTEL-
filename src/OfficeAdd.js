@@ -63,7 +63,7 @@ const layout = {
     };
   
     return (
-      <Form {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
+      <Form {...layout} label="Add Office" name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
         <Form.Item name={['office', 'email']} label="Email" rules={[ { type: 'email',},{required:true}]}>
           <Input />
         </Form.Item>

@@ -3,7 +3,7 @@
   text-align: center;
   display: flex;
   justify-content: space-around;
-  padding-top: 20vh;
+  padding-top: 10vh;
 }
 .App-logo {
   height: 40vmin;
@@ -15,6 +15,14 @@
   align-items: center;
   text-align: center;
   
+}
+.MenuHome{
+  display: flex;
+  text-align: center;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+  width: 20%;
 }
 
 @media (prefers-reduced-motion: no-preference) {

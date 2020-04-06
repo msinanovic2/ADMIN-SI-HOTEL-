@@ -20,9 +20,28 @@ function OfficePreview({match}){
             name:"",
             surname:"",
             },
-
      restaurantFeature:false, merchant:{name:"",surname:""}});
-   async function  getOffice()  {
+   
+
+    async function deleteCashRegisterRequest(BusinessId,OfficeId,CashRegisterId){
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Authorization",AuthService.currentHeaderValue);
+      var requestOptions = {
+        method: 'DELETE',
+        headers: myHeaders,
+      };
+      const data = await fetch(`https://main-server-si.herokuapp.com/api/business/${BusinessId}/offices/${OfficeId}/cashRegisters/${CashRegisterId}`, requestOptions)
+      return data;
+    }
+
+  async function deleteCashRegister(cashRegister){
+        const office2 = {...currentOffice}
+        office2.cashRegisters = office2.cashRegisters.filter(x=>x.id!= cashRegister.id)
+        deleteCashRegisterRequest(match.params.bid,currentOffice.id,cashRegister.id);
+        setCurrentOffice(office2);  
+  }
+  async function  getOffice()  {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append("Authorization",AuthService.currentHeaderValue);
@@ -36,7 +55,7 @@ function OfficePreview({match}){
             if(x.id == match.params.oid)
                 setCurrentOffice(x);
         })
-    }
+  }
 	
 	const dataSource = [
 	  {
@@ -68,18 +87,19 @@ function OfficePreview({match}){
 		title: 'View QR code',
         key: 'qr',
 		render: (text, register)=>{
-          //register je office
-           return <Button type={register ? "primary":"disabled"}> 
-             View QR code
-           </Button>
+           return <Link >
+              View QR Code
+           </Link>
         },
 	   },
 	   {
 		title: 'Delete Cash Register',
         key: 'delete',
 		render: (text, register)=>{
-          //register je office
-           return <Button type={register ? "primary":"disabled"} danger> 
+           return <Button type={register ? "primary":"disabled"} onClick={(event)=>{
+             console.log("ispis")
+             console.log(register);
+             deleteCashRegister({...register})}} danger> 
              Delete Cash Register
            </Button>
         },
@@ -88,25 +108,24 @@ function OfficePreview({match}){
    
     return (
 		<div>
-        <Descriptions title="Office Info" bordered>
+        <Descriptions title="Office Info" bordered column ={1} size ={"small"}>
           <Descriptions.Item label="Id">{currentOffice.id}</Descriptions.Item>
           <Descriptions.Item label="Address">{currentOffice.address}</Descriptions.Item>
           <Descriptions.Item label="City">{currentOffice.city}</Descriptions.Item>
           <Descriptions.Item label="Country">{currentOffice.country}</Descriptions.Item>
           <Descriptions.Item label="Phone Number">{currentOffice.phoneNumber}</Descriptions.Item>
           <Descriptions.Item label="Email">{currentOffice.email}</Descriptions.Item>
-          <Descriptions.Item label="Number of Cash Registers">{currentOffice.cashRegisters.length}</Descriptions.Item>
-          <Descriptions.Item span={2} label="Manager">{`${currentOffice.manager.name} ${currentOffice.manager.surname}`}</Descriptions.Item>
-		  
+          {currentOffice.manager.name?<Descriptions.Item span={2} label="Manager">{`${currentOffice.manager.name} ${currentOffice.manager.surname}`}</Descriptions.Item>:null} 
         </Descriptions>
-		
-		<div>{currentOffice.cashRegisters.length > 0 ?
-			<div>
+      <br/>
+      <br/>
+		{/* <div>{currentOffice.cashRegisters.length > 0 ?
+			<div> */}
 				<h3>Cash Registers</h3>
-				<Table columns={columns} dataSource={currentOffice.cashRegisters} pagination={false} locale={{emptyText: " ",}}/> 
-			</div>
+				<Table bordered columns={columns} dataSource={currentOffice.cashRegisters} pagination={false} locale={{emptyText: "No Cash Registers",}}/> 
+			{/* </div>
 			: null}			
-		</div>
+		</div> */}
 		</div>
     )
 }
