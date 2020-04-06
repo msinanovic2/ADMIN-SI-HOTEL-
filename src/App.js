@@ -22,6 +22,7 @@ import ChangePassword from './ChangePassword'
 import UserRoles from './UserRoles'
 import CashRegisterAdd from './CashRegisterAdd'
 import OfficeReport from './OfficeReport'
+import QRCode from './QRCode';
 
 class App extends React.Component {
 
@@ -58,6 +59,7 @@ class App extends React.Component {
                       <PrivateRoute path = "/user/roles/:id" component = {UserRoles}/>
                       <PrivateRoute path = "/business/:bid/office/:oid/cashregister/add" component= {CashRegisterAdd}/>
                       <PrivateRoute path = "/business/:bid/office/report/:oid" component = {OfficeReport}/>
+                      <PrivateRoute path = "/business/:bid/office/:oid/cashRegister/qr/:cid" component = {QRCode}/>
                 </div>
               </Router>
            </div>);
