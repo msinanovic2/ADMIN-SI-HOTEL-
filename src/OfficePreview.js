@@ -87,7 +87,7 @@ function OfficePreview({match}){
 		title: 'View QR code',
         key: 'qr',
 		render: (text, register)=>{
-           return <Link >
+           return <Link to={`/business/${match.params.bid}/office/${match.params.oid}/cashRegister/qr/${register.id}`}>
               View QR Code
            </Link>
         },
