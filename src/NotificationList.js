@@ -19,8 +19,8 @@ function NotificationsList() {
 
         const notifications = await data.json();
         for (let i = 0; i < notifications.length; i++) {
-            if (notifications[i].open) notifications[i].open = "Otvaranje office-a";
-            else notifications[i].open = "Zatvaranje office-a";
+            if (notifications[i].open) notifications[i].open = "Open";
+            else notifications[i].open = "Close";
         }
         setNotification(notifications);
         setTimeout(function () {
@@ -55,7 +55,7 @@ function NotificationsList() {
         fetch(url, requestOptions)
             .then(response => response.json())
             .then(result => {
-                alert("Uspješno dodan office");
+                alert("successfully added office");
 
                 //LINK/api/notifications/admin/read/{notificationId} (POST)
 
@@ -128,7 +128,7 @@ function NotificationsList() {
                         .then(response => response.json())
                         .then(result => {
                             console.log(result);
-                            alert("Uspješno obrisan office");
+                            alert("Successfully deleted office");
 
                             //LINK/api/notifications/admin/read/{notificationId} (POST)
 
@@ -201,7 +201,7 @@ function NotificationsList() {
             key: 'Accept',
             render: (text, record) => (
                 <Button type="primary" onClick={(event) => {
-                    if (record.open === "Otvaranje office-a") {
+                    if (record.open === "Open") {
                         addOffice(record.id);
                     } else closeOffice(record.id);
                 }}>
