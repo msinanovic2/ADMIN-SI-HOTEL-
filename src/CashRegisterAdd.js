@@ -19,7 +19,8 @@ function CashRegisterAdd({match}){
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization",AuthService.currentHeaderValue);
     const raw = JSON.stringify({
-        name:values.name
+        name:values.name,
+        uuid:values.name
     })
     var requestOptions = {
       method: 'POST',
