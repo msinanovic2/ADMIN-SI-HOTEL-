@@ -15,7 +15,8 @@ const [allBusiness, setAllBusiness] = useState([{
     name:"",
     offices: [{}],
     restaurantFeature: false,
-    merchant: {}
+    merchant: {},
+    transactions:{}
 }]);
 
 let filterBusiness = allBusiness;
@@ -31,83 +32,49 @@ async function  getAllBusiness()  {
     };
     const data = await fetch("https://main-server-si.herokuapp.com/api/business", requestOptions)
     const allBusinessJson = await data.json();
-    setAllBusiness(allBusinessJson);  
+    allBusinessJson.map(x=>{
+        getAllTransactionsForBusiness(x)
+    })
+    console.log(allBusinessJson);
+    setAllBusiness(allBusinessJson);
 }
-
-// PRETPOSTAVKA: Postoji ruta za promet na nivou jednog biznisa.
-//NAPOMENA: bez izmjena NEĆE RADITI ako ova funkcija bude async (promet se neće prikazivati)
-
-function  getBusinessTurnover(business, startDate, endDate)  {
-
-    let sum = null; // empty turnover if startDate or endDate is not given
-
-    if(startDate != null && endDate != null && startDate != "" && endDate != "") {
-
-        /*
+async function getAllTransactionsForBusiness(business){
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", AuthService.currentHeaderValue);
+        myHeaders.append("Authorization",AuthService.currentHeaderValue);
         var requestOptions = {
             method: 'GET',
             headers: myHeaders,
         };
-        const data = await fetch("https://main-server-si.herokuapp.com/api/neka-ruta-za-promet-business/" + business.id.toString(), requestOptions);
-        const turnovers = await data.json();
-        */
-
-        // sum of all cash register turnovers in all offices for given business in given period
-        sum = 123;// dummy data
-
-    }
-
-    return sum;
-}
-
-function getTotalTurnovers(startDate, endDate)  {
-
-
-    for(var i = 0; i < allBusiness.length; i++)
-        filterBusiness[i].turnovers = getBusinessTurnover(allBusiness[i], startDate, endDate);
-
-    filterBusiness = filterBusiness.filter((value, index, array) => true);
-
-    setAllBusiness(filterBusiness);
-
+        const data = await fetch(`https://main-server-si.herokuapp.com/api/business/${business.id}/transactions`, requestOptions)
+        const transactions = await data.json()
+        business.transactions = transactions
 }
 
 function handleCalendarChange(dates, dataStrings) {
 
-    let startDate = dataStrings[0];
-    let endDate = dataStrings[1];
+    if(dates == null || dates[0] == null || dates [1] == null)
+        return;
 
-    console.log("start date = " + startDate + " end date = " + endDate); // dataStrings je par stringova, primjer: dataStrings[0] = "2020-04-16"
-    console.log(isDateBetween(startDate, endDate, "2020-04-11"));
+    let startDate = dates[0].toDate();
+    let endDate = dates[1].toDate();
 
-    getTotalTurnovers(dataStrings[0], dataStrings[1]);
-
-
+    const allBusiness2 = allBusiness.slice();
+    allBusiness2.map((x)=>{
+        let sum = 0;
+        x.transactions.map(trans =>{
+            const datum = new Date(trans.timestamp);
+            if(datum >startDate && datum < endDate){
+                console.log(datum)
+                console.log("uracunat")
+                sum+=trans.totalPrice;
+            }
+        })
+        x.turnover = sum; 
+    })
+    setAllBusiness(allBusiness2)
+    console.log(allBusiness)
 }
-
-
-// Ne koristi se nigdje (osim za ispis u konzoli), ali možda zatreba ako je dostupan promet za neku kasu samo za jedan konkretan datum, a ne interval datuma
-function isDateBetween(startDate, endDate, date) {
-
-    // is date between startDate and endDate
-    // every parameter is a string in format: "YYYY-MM-DD" 
-
-    let yearMonthDay = date.split('-');
-    let myDate = new Date(yearMonthDay[0], yearMonthDay[1]-1, yearMonthDay[2]);
-
-    let yearMonthDayStart = startDate.split('-');
-    let myDateStart = new Date(yearMonthDayStart[0], yearMonthDayStart[1]-1, yearMonthDayStart[2]);
-
-    let yearMonthDayEnd = endDate.split('-');
-    let myDateEnd = new Date(yearMonthDayEnd[0], yearMonthDayEnd[1]-1, yearMonthDayEnd[2]);
-
-    return myDate >= myDateStart && myDate <= myDateEnd;
-
-}
-
 
 const columns = [
 
@@ -139,7 +106,7 @@ const columns = [
     },
     {
         title: 'Turnover',
-        dataIndex: 'turnovers',
+        dataIndex: 'turnover',
         key: 'turnover',
     }
 ];
