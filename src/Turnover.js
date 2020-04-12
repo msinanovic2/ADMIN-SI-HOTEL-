@@ -19,22 +19,19 @@ function Turnover(){
         transactions:{}
     }]);
 
-    let filterBusiness = allBusiness;
-
-
 async function  getAllBusiness()  {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization",AuthService.currentHeaderValue);
     var requestOptions = {
       method: 'GET',
-      headers: myHeaders,
+      headers: myHeaders
     };
     const data = await fetch("https://main-server-si.herokuapp.com/api/business", requestOptions)
     const allBusinessJson = await data.json();
-    allBusinessJson.map(x=>{
+    allBusinessJson.map(x => {
         getAllTransactionsForBusiness(x)
-    })
+    });
     console.log(allBusinessJson);
     setAllBusiness(allBusinessJson);
 }
@@ -53,27 +50,46 @@ async function getAllTransactionsForBusiness(business){
 
 function handleCalendarChange(dates, dataStrings) {
 
-    if(dates == null || dates[0] == null || dates [1] == null)
-        return;
-
-    let startDate = dates[0].toDate();
-    let endDate = dates[1].toDate();
-
     const allBusiness2 = allBusiness.slice();
-    allBusiness2.map((x)=>{
-        let sum = 0;
-        x.transactions.map(trans =>{
-            const datum = new Date(trans.timestamp);
-            if(datum >startDate && datum < endDate){
-                console.log(datum)
-                console.log("uracunat")
-                sum+=trans.totalPrice;
-            }
+
+    if(dates == null || dates[0] == null || dates [1] == null) {
+
+        allBusiness2.map((x) => {
+            x.turnover = null; 
+        });
+
+    }
+
+
+    else {
+        
+        let startDate = dates[0].toDate();
+        let endDate = dates[1].toDate();
+        startDate.setHours(0,0,0,0);
+        endDate.setHours(23,59,59,999);
+
+        console.log("startDate = " + startDate + ", endDate = " + endDate);
+
+
+        allBusiness2.map((x) => {
+            let sum = 0;
+            x.transactions.map(trans =>{
+                const datum = new Date(trans.timestamp);
+                
+                if(datum >= startDate && datum <= endDate){
+                    console.log(datum)
+                    console.log("uracunat")
+                    sum += trans.totalPrice;
+                }
+            })
+                sum = sum.toFixed(2);
+                x.turnover = sum.toString() + " (KM)"; 
         })
-        x.turnover = sum; 
-    })
+
+    }
+    
     setAllBusiness(allBusiness2)
-    console.log(allBusiness)
+    console.log(JSON.stringify(allBusiness));
 }
 
 const columns = [
@@ -108,6 +124,7 @@ const columns = [
         title: 'Turnover',
         dataIndex: 'turnover',
         key: 'turnover',
+        align: 'right'
     }
 ];
 
