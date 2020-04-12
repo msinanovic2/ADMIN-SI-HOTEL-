@@ -8,18 +8,18 @@ const { RangePicker } = DatePicker;
 
 function Turnover(){
 
-useEffect(() => { getAllBusiness(); }, []);
+    useEffect(() => { getAllBusiness(); }, []);
 
-const [allBusiness, setAllBusiness] = useState([{
-    id:"",
-    name:"",
-    offices: [{}],
-    restaurantFeature: false,
-    merchant: {},
-    transactions:{}
-}]);
+    const [allBusiness, setAllBusiness] = useState([{
+        id:"",
+        name:"",
+        offices: [{}],
+        restaurantFeature: false,
+        merchant: {},
+        transactions:{}
+    }]);
 
-let filterBusiness = allBusiness;
+    let filterBusiness = allBusiness;
 
 
 async function  getAllBusiness()  {
