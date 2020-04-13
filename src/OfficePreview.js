@@ -8,20 +8,34 @@ function OfficePreview({match}){
     useEffect(()=>{
       getOffice();
     },[]);
-   const [currentOffice,setCurrentOffice] = useState(
-     {id:"",
-     address:"",
-     phoneNumber:"",
-     city:"",
-     country:"",
-     cashRegisters:[],
-     email:"",
-     manager:{
-            name:"",
-            surname:"",
-            },
-     restaurantFeature:false, merchant:{name:"",surname:""}});
-   
+
+
+    function makeid(length) {
+      var result           = '';
+      var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      var charactersLength = characters.length;
+      for ( var i = 0; i < length; i++ ) {
+         result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      }
+      return result;
+    }
+   const [currentOffice,setCurrentOffice] = useState({id:"",address:"",phoneNumber:"",city:"",country:"",cashRegisters:[],email:"",manager:{name:"",surname:"",},restaurantFeature:false, merchant:{name:"",surname:""}});
+    
+   function changeUUID(register){
+     var myHeaders = new Headers();
+     myHeaders.append("Content-Type", "application/json");
+     myHeaders.append("Authorization",AuthService.currentHeaderValue);
+     const raw = JSON.stringify({
+         name:register.name,
+         uuid:makeid(15)
+     })
+     var requestOptions = {
+       method: 'POST',
+       headers: myHeaders,
+       body :raw
+     };
+     fetch(`https://main-server-si.herokuapp.com/api/business/${match.params.bid}/offices/${match.params.oid}/cashRegisters/${register.id}`, requestOptions)
+    }
 
     async function deleteCashRegisterRequest(BusinessId,OfficeId,CashRegisterId){
       var myHeaders = new Headers();
@@ -103,7 +117,16 @@ function OfficePreview({match}){
              Delete Cash Register
            </Button>
         },
-	   },
+	   }, {
+      title: 'Change UUID',
+          key: 'uuid',
+      render: (text, register)=>{
+             return <Button type={register ? "primary":"disabled"} onClick={(event)=>{changeUUID({...register})
+             }} > 
+               Change UUID
+             </Button>
+          },
+       }
 	];
    
     return (

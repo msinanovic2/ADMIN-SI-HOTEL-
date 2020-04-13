@@ -6,7 +6,7 @@ function QRCode({match}){
         getQRinfo();
       },[]);
      const [QRCodeInfo,setQR] = useState(
-        {cashRegisterId:"",officeId:"",businessName :""} );
+        {cashRegisterId:"",officeId:"",businessName :"",uuid:""} );
 
     async function  getQRinfo()  {
         let businessName;
@@ -19,9 +19,13 @@ function QRCode({match}){
         };
         const data = await fetch("https://main-server-si.herokuapp.com/api/business/"+match.params.bid, requestOptions)
         const business = await data.json();
-        console.log(match.params.oid)
-        console.log(typeof match.params.oid)
-        setQR({cashRegisterId:parseInt(match.params.cid), officeId:parseInt(match.params.oid),businessName:business.name});
+        var requestOptions2 = {
+            method: 'GET',
+            headers: myHeaders,
+          };
+        const cashRegisterData = await fetch(`https://main-server-si.herokuapp.com/api/business/${match.params.bid}/offices/${match.params.oid}/cashRegisters/${match.params.cid}`, requestOptions2)
+        const cashRegister = await cashRegisterData.json()
+        setQR({cashRegisterId:parseInt(match.params.cid), officeId:parseInt(match.params.oid),businessName:business.name,uuid:cashRegister.uuid});
   }
   // NE DIRATI OVAJ DOLE DIO
     return <div className = "QR">
@@ -31,6 +35,7 @@ function QRCode({match}){
 "cashRegisterId": ${QRCodeInfo.cashRegisterId},
 "officeId": ${QRCodeInfo.officeId},
 "businessName": "${QRCodeInfo.businessName}"
+"uuid":"${QRCodeInfo.uuid}"
 }`} >
         </Qr>
     </div>
