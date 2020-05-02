@@ -32,6 +32,22 @@
   flex-direction: column;
   width: 20%;
 }
+.OfficePreviewTable{
+  text-align: center;
+}
+.OfficePreviewInput, .OfficePreviewaddBtn {
+  float: left;
+}
+
+
+.OfficePreviewInput {
+  margin-right: 11%;
+}
+
+.OfficePreviewaddBtn {
+  width: 27%;
+}
+
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
