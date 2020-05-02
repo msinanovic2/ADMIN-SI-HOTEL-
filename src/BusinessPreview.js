@@ -1,28 +1,13 @@
-import { Descriptions,Badge,Table, Button } from 'antd';
+import { Descriptions,Badge,Table, Button ,Menu, Dropdown} from 'antd';
+import { DownOutlined } from '@ant-design/icons';
 import React,{useState,useEffect} from 'react'
 import {AuthService} from './AuthService'
 import {Link} from 'react-router-dom'
+import DescriptionsItem from 'antd/lib/descriptions/Item';
 
 
 function BusinessPreview(props){
-    //REQUESTS
-  async function addCashRegisterRequest(BusinessId,OfficeId){
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization",AuthService.currentHeaderValue);
-    var requestOptions = {
-      method: 'POST',
-      headers: myHeaders,
-    };
-    let idCR;
-    await fetch(`https://main-server-si.herokuapp.com/api/business/${BusinessId}/offices/${OfficeId}/cashRegisters`, requestOptions).then(response => response.json())
-    .then(result => 
-     idCR = {...result.id}
-     )
-     return idCR;
-  }
-
-
+  useEffect(()=>{  getBuisness(); },[]);
   async function  getBuisness()  {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -33,11 +18,21 @@ function BusinessPreview(props){
     };
     const data = await fetch("https://main-server-si.herokuapp.com/api/business/"+props.match.params.id, requestOptions)
     setCurrentBusiness( await data.json());
+  } 
+function changeRestaurant(business) {
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("Authorization", AuthService.currentHeaderValue);
+  var requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+  };
+  fetch(`https://main-server-si.herokuapp.com/api/business/${business.id}/restaurant`, requestOptions);
+  let changedBusiness = {...business}
+  changedBusiness .restaurantFeature = !changedBusiness.restaurantFeature;
+  setCurrentBusiness(changedBusiness);
 }
-
-  
-
-  async function deleteOfficeRequest(BusinessId,OfficeId){
+ async function deleteOfficeRequest(BusinessId,OfficeId){
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization",AuthService.currentHeaderValue);
@@ -55,18 +50,12 @@ function BusinessPreview(props){
     }
   })
 }
-   //FUNCTIONS
-  async function addCashRegister(office){
-      props.history.push(`/business/${props.match.params.id}/office/${office.id}/cashregister/add`);    
-  }
-
-  async  function deleteOffice(record){
+ async  function deleteOffice(record){
         deleteOfficeRequest(props.match.params.id,record.id)
-  }
-  useEffect(()=>{  getBuisness(); },[]);
-  const [currentBusiness,setCurrentBusiness] = useState({id:"1",name:"Test",offices :[{id:"1",address:"",phoneNumber:"",city:"",cashRegisters:[]}],restaurantFeature:false, merchant:{name:"",surname:""}});
-  
-  const columns = [
+}  
+const [currentBusiness,setCurrentBusiness] = useState({id:"1",name:"Test",offices :[{id:"1",address:"",phoneNumber:"",city:"",cashRegisters:[]}],restaurantFeature:false, merchant:{name:"",surname:""},syncTime:"",maxNumberOffices:""  });
+
+const columns = [
       {
         title: 'Id',
         dataIndex: 'id',
@@ -93,15 +82,6 @@ function BusinessPreview(props){
         key:'cashRegisters',
         render: cashRegisters=>{
              return cashRegisters.length;
-        }
-      }, {
-        title :'Add Cash Register',
-        key:'addCashRegisters',
-        render: (text,record)=>{
-             //record je office
-             return <Link  to={`/business/${props.match.params.id}/office/${record.id}/cashregister/add`}> 
-               Add Cash Register
-             </Link>
         }
       },
        {
@@ -135,17 +115,52 @@ function BusinessPreview(props){
              </Button>
           }
         },
-    ];
+];
+const onClick = ({ key }) => {
+  switch(key){
+    case '1':
+        changeRestaurant(currentBusiness);
+        break;
+    case '2':
+        props.history.push(`/business/${props.match.params.id}/synctime`);
+        break;
+    case '3' :
+        props.history.push(`/business/${props.match.params.id}/officelimit`);
+        break;
+    case '4':
+        props.history.push(`/business/${props.match.params.id}/reservations`);
+        break;
+  }
+};
+const menu = (
+  <Menu onClick={onClick}>
+    <Menu.Item key="1">Change Restaurant Feature</Menu.Item>
+    <Menu.Item key="2">Change Sync Time</Menu.Item>
+    <Menu.Item key="3">Change Office Limit</Menu.Item>  
+    <Menu.Item disabled = {!currentBusiness.restaurantFeature} key="4">Change Reservation Duration</Menu.Item>
+  </Menu>
+);
+
     return (
       <div>  
         <Descriptions title="Business Info" bordered column = {1} size = {"small"}>
           <Descriptions.Item label="Id">{currentBusiness.id}</Descriptions.Item>
           <Descriptions.Item label="Name">{currentBusiness.name}</Descriptions.Item>
           <Descriptions.Item span={2} label="Merchant">{currentBusiness.merchant.name + " "+ currentBusiness.merchant.surname}</Descriptions.Item>
-          <Descriptions.Item label="restaurantFeature" span={2}>
+          <Descriptions.Item label="Restaurant Feature" span={2} onClick= {(event)=> changeRestaurant(currentBusiness)}>
             <Badge status={ currentBusiness.restaurantFeature?"success":"default"} text={ currentBusiness.restaurantFeature?"Yes":"No"} />
           </Descriptions.Item>
+          <DescriptionsItem label ="Sync time" > {currentBusiness.syncTime}</DescriptionsItem>
+          <DescriptionsItem label = "Office Limit"> {currentBusiness.maxNumberOffices} </DescriptionsItem>
+          { currentBusiness.restaurantFeature ? <DescriptionsItem label = "Reservation Time">Neko Vrijeme</DescriptionsItem>:null}
         </Descriptions>
+        <br/>
+        <br/>
+        <Dropdown overlay={menu}>
+            <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                Edit Business <DownOutlined />
+            </a>
+        </Dropdown>,
         <br/>
         <br/>
         <h3>

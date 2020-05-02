@@ -24,6 +24,12 @@ import CashRegisterAdd from './CashRegisterAdd'
 import OfficeReport from './OfficeReport'
 import QRCode from './QRCode';
 import Turnover from './Turnover'
+import PDV from './Pdv';
+import SyncTime from './SyncTime';
+import OfficeLimit from './OfficeLimit';
+import Reservations from './Reservations';
+import WorkHour from './WorkHour';
+import CashRegisterLimit from './CashRegisterLimit';
 
 class App extends React.Component {
 
@@ -62,6 +68,12 @@ class App extends React.Component {
                       <PrivateRoute path = "/business/:bid/office/report/:oid" component = {OfficeReport}/>
                       <PrivateRoute path = "/business/:bid/office/:oid/cashRegister/qr/:cid" component = {QRCode}/>
                       <PrivateRoute path ="/business/turnover" component = {Turnover}/>
+                      <PrivateRoute path = '/pdv' component = {PDV}/>
+                      <PrivateRoute path = "/business/:bid/synctime" component= {SyncTime}/>
+                      <PrivateRoute path = "/business/:bid/officelimit" component = {OfficeLimit}/>
+                      <PrivateRoute path = "/business/:bid/reservations" component ={Reservations}/>
+                      <PrivateRoute path = "/business/:bid/office/:oid/workinghour" component = {WorkHour}/>
+                      <PrivateRoute path ="/business/:bid/office/:oid/cashregisterlimit" component ={CashRegisterLimit}/>
                 </div>
               </Router>
            </div>);

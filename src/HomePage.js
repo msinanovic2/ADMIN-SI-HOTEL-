@@ -9,12 +9,16 @@ class HomePage extends React.Component{
                           Add Merchant and Business
                         </Button>
                         <br/>
-                        <br/>
-                                              
+                        <br/>                                            
                         <Button className= "HomePageButton" type="primary" block onClick={(event)=>this.props.history.push("/changepassword")}>
                           Change my password
                         </Button>
-                     
+                        <br/>
+                        <br/>                                            
+                        <Button className= "HomePageButton" type="primary" block onClick={(event)=>this.props.history.push("/pdv")}>
+                          PDV
+                        </Button>
+                        
                       </div>
                 )
     }
