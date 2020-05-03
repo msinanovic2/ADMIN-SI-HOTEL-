@@ -39,10 +39,6 @@ let stompClient;
 
 function App() {
 
-  function handleNotif(){
-
-
-  }
   const [response, setResponse] = useState([]);
   const [message, setMessage] = useState('');
   const [currentUser,setCurrentUser] = useState(null);
