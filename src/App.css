@@ -38,6 +38,12 @@
 .OfficePreviewInput, .OfficePreviewaddBtn {
   float: left;
 }
+.tabs {
+  width: 60%;
+}
+.tabPane{
+  width: 100%;
+}
 
 
 .OfficePreviewInput {
