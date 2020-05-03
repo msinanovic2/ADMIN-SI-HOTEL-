@@ -119,6 +119,7 @@ function OfficePreview(props){
         const data = await fetch(`https://main-server-si.herokuapp.com/api/business/${props.match.params.bid}/offices/${props.match.params.oid}/tables`, requestOptions)
         const tables = await data.json();
         setTables(tables);
+		console.log(typeof tables);
   }
   async function onFinishCash(valuse){
     var postojiKasaSaIstimImenom = false
@@ -152,6 +153,7 @@ function OfficePreview(props){
       return;
     }
     const table =  await addTable(values,props.match.params.bid,props.match.params.oid);
+	console.log("on finish " + typeof tables);
     setTables([...table]);
   }
   async function addTable(values,BusinessId,OfficeId){
