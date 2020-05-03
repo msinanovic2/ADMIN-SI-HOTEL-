@@ -13,7 +13,7 @@ function SyncTime(props){
         let time = values.name._d.toString().split(' ')[4].split(':')[0] + ':' + values.name._d.toString().split(' ')[4].split(':')[1];
         let url = `https://main-server-si.herokuapp.com/api/business/${props.match.params.bid}/syncTime`;
 
-        console.log(time,url);
+        console.log(time,url, props.history.push);
 
         const raw = JSON.stringify({
             syncTime:time
@@ -28,10 +28,19 @@ function SyncTime(props){
           headers: myHeaders,
           body: raw
         };
-        const data = await fetch(url,requestOptions);
-        const msg =  await data.json();
-        console.log(msg);
-        return msg;
+        const data = await fetch(url,requestOptions).then(response => response.json())
+        .then(result => {
+            if(result.statusCode === 200){
+                alert(result.message);
+                window.location.href = "/business";
+            }else
+                alert("Error, synchronization failed");
+            console.log(result);
+
+        })
+        // const msg =  await data.json();
+        // console.log(msg);
+        // return msg;
       }
 
 
