@@ -42,8 +42,6 @@ function PDV(){
 			}
 			newRate.push({"pdv": values.pdv});
 			setRates([...newRate]);
-			// kako update rates??
-			// ne refresha se tabela
 		}
 		
 	}	
@@ -61,7 +59,7 @@ function PDV(){
 		<div>
 		  <Table  bordered columns={columns} dataSource={rates} /><br/>
 		  <Form name="customized_form_controls" layout="inline" onFinish={onFinishRate} validateMessages ={ {required : 'This field is required!'}}>
-			<Form.Item name="pdv" label="PDV rate" rules={[{ required:true }]}>
+			<Form.Item name="pdv" label="PDV amount" rules={[{ required:true }]}>
 			  <InputNumber min ={0}></InputNumber>
 			</Form.Item>
 			<Form.Item>
