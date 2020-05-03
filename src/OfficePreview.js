@@ -1,4 +1,4 @@
-import { Descriptions, Badge, Table, Button, Input ,Form,Menu, Dropdown } from 'antd';
+import { Descriptions, Badge, Table, Button, Input ,Form,Menu, Dropdown ,InputNumber} from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 
 import React,{useState, useEffect} from 'react'
@@ -8,7 +8,7 @@ import DescriptionsItem from 'antd/lib/descriptions/Item';
 
 
 // u funkciju getTables dodati request za uzimanje svih stolova, pozvati funkciju setTables nad responsom( nad data= response.json() slicno kao u getOffice)
-/* 
+
 function addTable(values,BusinessId,OfficeId){
   var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -21,7 +21,6 @@ function addTable(values,BusinessId,OfficeId){
    fetch(`https://main-server-si.herokuapp.com/api/business/{BusinessID}/offices/{OfficeId}/tables`, requestOptions)
 
 }
-Izmjenit BO*/
 
 function OfficePreview(props){
     useEffect(()=>{
@@ -94,8 +93,16 @@ function OfficePreview(props){
         setCurrentOffice(office2);  
   }
   async function deleteTable(table){
-
-
+    var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Authorization",AuthService.currentHeaderValue);
+      var requestOptions = {
+        method: 'DELETE',
+        headers: myHeaders,
+    };
+    const data = await fetch(`https://main-server-si.herokuapp.com/api/business/${props.match.params.bid}/offices/${props.match.params.oid}/tables/${table.id}`, requestOptions)
+    let tables2 = tables.filter(x=>x.tableNumber!==table.tableNumber)
+    setTables(tables2);
   }
   async function  getOffice()  {
         var myHeaders = new Headers();
@@ -115,6 +122,16 @@ function OfficePreview(props){
   }
   async function getTables(){
 
+    var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization",AuthService.currentHeaderValue);
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+        };
+        const data = await fetch(`https://main-server-si.herokuapp.com/api/business/${props.match.params.bid}/offices/${props.match.params.oid}/tables`, requestOptions)
+        const tables = await data.json();
+        setTables(tables);
   }
   async function onFinishCash(valuse){
     var postojiKasaSaIstimImenom = false
@@ -126,12 +143,43 @@ function OfficePreview(props){
       alert("Cash Register name must be unique!");
       return;
     }
+    if(currentOffice.cashRegisters.length == currentOffice.maxNumberCashRegisters){
+      alert(`You already have ${currentOffice.maxNumberCashRegisters} cash registers!`);
+      return;
+    }
     const cashRegister = await addCashRegisterRequest(props.match.params.bid,currentOffice.id,valuse);
     const currentOffice3 = {
       ...currentOffice,
       cashRegisters: [...currentOffice.cashRegisters, cashRegister]
     };
     setCurrentOffice(currentOffice3);
+  }
+  async function onFinishTable(values){
+    let postojiStol = false
+    tables.forEach(table => {
+      if(table.tableNumber == values.number)
+        postojiStol = true;
+    });
+    if(postojiStol){
+      alert("Table nubmer must be unique!");
+      return;
+    }
+    const table =  await addTable(values,props.match.params.bid,props.match.params.oid);
+    setTables([...table]);
+  }
+  async function addTable(values,BusinessId,OfficeId){
+    var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Authorization",AuthService.currentHeaderValue);
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: JSON.stringify({tableNumber:values.number})
+    };
+    const data = await fetch(`https://main-server-si.herokuapp.com/api/business/${BusinessId}/offices/${OfficeId}/tables`, requestOptions)
+    const table = await data.json();
+    console.log(table);
+    return table;
   }
   const columnsTables = [
     {
@@ -148,7 +196,7 @@ function OfficePreview(props){
       key: 'delete',
       render: (text, table)=>{
              return <Button type={table ? "primary":"disabled"} onClick={(event)=>{
-              const check = window.confirm("Are you sure you want to permanently remove cash register?");
+              const check = window.confirm("Are you sure you want to permanently remove table?");
               if(check)
                deleteTable({...table})}} danger> 
                Delete Table
@@ -262,7 +310,19 @@ function OfficePreview(props){
       </Form>
       <br/>
       <br/>
-			{restaurantFeature?(<div> <h3>Tables</h3> <Table class="OfficePreviewTable" bordered columns={columnsTables} dataSource={tables} pagination={false} /> </div>) :null}
+			{restaurantFeature?(<div> <h3>Tables</h3> <Table class="OfficePreviewTable" bordered columns={columnsTables} dataSource={tables}  />
+      <Form name="customized_form_controls" layout="inline" onFinish={onFinishTable} validateMessages ={ {required : 'This field is required!'}}>
+        <Form.Item name="number" label="Table number" rules={[{ required:true }]}>
+          <InputNumber min ={0}></InputNumber>
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Add Table
+          </Button>
+        </Form.Item>
+      </Form>
+      
+       </div>) :null}
 		</div>
     )
 }
