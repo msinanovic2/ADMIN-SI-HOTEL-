@@ -1,9 +1,44 @@
-import React from 'react'
+import React,{useState, useEffect} from 'react'
+import { TimePicker } from 'antd';
+import { Descriptions, Badge, Table, Button, Input ,Form,Menu, Dropdown } from 'antd';
+import {AuthService} from './AuthService'
 
+const { RangePicker } = TimePicker;
 function WorkHour(props){
-
+async function onFinishWorkHour (values){
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization",AuthService.currentHeaderValue);
+    var raw = JSON.stringify({
+        "end":values.office.time[1].format("kk:mm"),
+        "start":values.office.time[0].format("kk:mm")
+    });
+    var requestOptions = {
+        method: 'PUT',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      };
+      fetch(`https://main-server-si.herokuapp.com/api/business/${props.match.params.bid}/offices/${props.match.params.oid}/workHours`, requestOptions)
+          .then(response => response.json())
+          .then(result => {
+              console.log(result.statusCode)
+            if(result.statusCode==200){
+                props.history.push("/business/"+props.match.params.bid+"/office/details/"+props.match.params.oid);
+            }
+          })
+}
     return <div>
-        WorkHour
+       <Form name="customized_form_controls" layout="inline" onFinish={onFinishWorkHour} validateMessages ={ {required : 'This field is required!'}}>
+       <Form.Item name={['office', 'time']} label="Working hours" rules={[{required: true,}]}>
+          <RangePicker/>
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Add Working Hours
+          </Button>
+        </Form.Item>
+      </Form>
     </div>
 }
-export default WorkHour
+export default WorkHour;
