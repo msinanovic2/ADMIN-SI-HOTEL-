@@ -1,26 +1,13 @@
 import { Descriptions, Badge, Table, Button, Input ,Form,Menu, Dropdown ,InputNumber} from 'antd';
 import { DownOutlined } from '@ant-design/icons';
+import DescriptionsItem from 'antd/lib/descriptions/Item';
 
 import React,{useState, useEffect} from 'react'
 import {AuthService} from './AuthService'
 import {Link} from 'react-router-dom'
-import DescriptionsItem from 'antd/lib/descriptions/Item';
+import { Tabs } from 'antd';
 
-
-// u funkciju getTables dodati request za uzimanje svih stolova, pozvati funkciju setTables nad responsom( nad data= response.json() slicno kao u getOffice)
-
-function addTable(values,BusinessId,OfficeId){
-  var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization",AuthService.currentHeaderValue);
-    var requestOptions = {
-      method: 'POST',
-      headers: myHeaders,
-      body: JSON.stringify({tableNumber:values.tableNumber})
-  };
-   fetch(`https://main-server-si.herokuapp.com/api/business/{BusinessID}/offices/{OfficeId}/tables`, requestOptions)
-
-}
+const { TabPane } = Tabs;
 
 function OfficePreview(props){
     useEffect(()=>{
@@ -272,60 +259,64 @@ function OfficePreview(props){
     </Menu>
   );
     return (
-		<div>
-        <Descriptions title="Office Info" bordered column ={1} size ={"small"}>
-          <Descriptions.Item label="Id">{currentOffice.id}</Descriptions.Item>
-          <Descriptions.Item label="Address">{currentOffice.address}</Descriptions.Item>
-          <Descriptions.Item label="City">{currentOffice.city}</Descriptions.Item>
-          <Descriptions.Item label="Country">{currentOffice.country}</Descriptions.Item>
-          <Descriptions.Item label="Phone Number">{currentOffice.phoneNumber}</Descriptions.Item>
-          <Descriptions.Item label="Email">{currentOffice.email}</Descriptions.Item>
-          <Descriptions.Item label ="Cash Register Limit">{currentOffice.maxNumberCashRegisters}</Descriptions.Item>
-          <Descriptions.Item label ="Language">{currentOffice.language}</Descriptions.Item>
-          <Descriptions.Item label ="Working hours">{currentOffice.workDayStart + "-" + currentOffice.workDayEnd}</Descriptions.Item>
-          {currentOffice.manager.name?<Descriptions.Item span={2} label="Manager">{`${currentOffice.manager.name} ${currentOffice.manager.surname}`}</Descriptions.Item>:null} 
-        </Descriptions>
-      <br/>
-      <br/>
-      <Dropdown overlay={menu}>
-            <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-                Edit Office <DownOutlined />
-            </a>
-        </Dropdown>,
-      <br/>
-      <br/>
-			<h3>Cash Registers</h3>
-			<Table class="OfficePreviewTable" bordered columns={columns} dataSource={currentOffice.cashRegisters} pagination={false} /> 
-      <br/>
-      <br/>
-      <Form name="customized_form_controls" layout="inline" onFinish={onFinishCash} validateMessages ={ {required : 'This field is required!'}}>
-        <Form.Item name="name" label="Cash register name" rules={[{ required:true }]}>
-          <Input/>
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            Add Cash Register
-          </Button>
-        </Form.Item>
-      </Form>
-      <br/>
-      <br/>
-			{restaurantFeature?(<div> <h3>Tables</h3> <Table class="OfficePreviewTable" bordered columns={columnsTables} dataSource={tables}  />
-      <Form name="customized_form_controls" layout="inline" onFinish={onFinishTable} validateMessages ={ {required : 'This field is required!'}}>
-        <Form.Item name="number" label="Table number" rules={[{ required:true }]}>
-          <InputNumber min ={0}></InputNumber>
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            Add Table
-          </Button>
-        </Form.Item>
-      </Form>
-      
-       </div>) :null}
-		</div>
+        <Tabs className="tabs" defaultActiveKey="1" size="large" >
+          <TabPane className= "tabPane" tab="Info" key="1">
+            <div>
+            <Descriptions  title="Office Info" bordered column ={1} >
+              <Descriptions.Item label="Id">{currentOffice.id}</Descriptions.Item>
+              <Descriptions.Item label="Address">{currentOffice.address}</Descriptions.Item>
+              <Descriptions.Item label="City">{currentOffice.city}</Descriptions.Item>
+              <Descriptions.Item label="Country">{currentOffice.country}</Descriptions.Item>
+              <Descriptions.Item label="Phone Number">{currentOffice.phoneNumber}</Descriptions.Item>
+              <Descriptions.Item label="Email">{currentOffice.email}</Descriptions.Item>
+              <Descriptions.Item label ="Cash Register Limit">{currentOffice.maxNumberCashRegisters}</Descriptions.Item>
+              <Descriptions.Item label ="Language">{currentOffice.language}</Descriptions.Item>
+              <Descriptions.Item label ="Working hours">{currentOffice.workDayStart + "-" + currentOffice.workDayEnd}</Descriptions.Item>
+              {currentOffice.manager.name?<Descriptions.Item span={2} label="Manager">{`${currentOffice.manager.name} ${currentOffice.manager.surname}`}</Descriptions.Item>:null} 
+            </Descriptions>
+            <br/>
+            <br/>
+            <Dropdown overlay={menu}>
+              <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                  Edit Office <DownOutlined />
+              </a>
+            </Dropdown>
+            </div>
+          </TabPane>
+          <TabPane className="tabPane" tab="Cash Registers"  key="2">
+            <h3>Cash Registers</h3>
+			      <Table  bordered columns={columns} dataSource={currentOffice.cashRegisters}  /> 
+            <br/>
+            <br/>
+            <Form name="customized_form_controls" layout="inline" onFinish={onFinishCash} validateMessages ={ {required : 'This field is required!'}}>
+              <Form.Item name="name" label="Cash register name" rules={[{ required:true }]}>
+                <Input/>
+              </Form.Item>
+              <Form.Item>
+                <Button type="primary" htmlType="submit">
+                Add Cash Register
+                </Button>
+              </Form.Item>
+            </Form>
+          </TabPane>
+          <TabPane className="tabPane" tab="Tables" key="3" disabled ={!restaurantFeature?true:false}>
+              <h3>Tables</h3> 
+              <Table  bordered columns={columnsTables} dataSource={tables}  /><br/>
+              <Form name="customized_form_controls" layout="inline" onFinish={onFinishTable} validateMessages ={ {required : 'This field is required!'}}>
+                <Form.Item name="number" label="Table number" rules={[{ required:true }]}>
+                  <InputNumber min ={0}></InputNumber>
+                </Form.Item>
+                <Form.Item>
+                  <Button type="primary" htmlType="submit">
+                    Add Table
+                  </Button>
+                </Form.Item>
+              </Form>
+          </TabPane>
+  </Tabs>
+        
+    
     )
 }
 export default OfficePreview;
 
-//Ubaciti u div u liniji 231 formu za add table
