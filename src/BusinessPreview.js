@@ -152,7 +152,7 @@ const menu = (
           </Descriptions.Item>
           <DescriptionsItem label ="Sync time" > {currentBusiness.syncTime}</DescriptionsItem>
           <DescriptionsItem label = "Office Limit"> {currentBusiness.maxNumberOffices} </DescriptionsItem>
-          { currentBusiness.restaurantFeature ? <DescriptionsItem label = "Reservation Time">Neko Vrijeme</DescriptionsItem>:null}
+          { currentBusiness.restaurantFeature ? <DescriptionsItem label = "Reservation Time">{currentBusiness.duration}</DescriptionsItem>:null}
         </Descriptions>
         <br/>
         <br/>
@@ -160,7 +160,7 @@ const menu = (
             <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
                 Edit Business <DownOutlined />
             </a>
-        </Dropdown>,
+        </Dropdown>
         <br/>
         <br/>
         <h3>
