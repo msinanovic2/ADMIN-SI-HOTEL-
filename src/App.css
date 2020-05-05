@@ -17,12 +17,18 @@
   height: 40vmin;
   pointer-events: none;
 }
+.linkic{
+  color: white;
+}
 .Logout{
   display: flex;
   justify-content: space-around;
   align-items: center;
-  text-align: center;
-  
+  text-align: center; 
+}
+.pageHeader{
+  background-color: #003a8c;
+  color: white;
 }
 .MenuHome{
   display: flex;
