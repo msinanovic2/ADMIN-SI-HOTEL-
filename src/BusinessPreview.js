@@ -4,6 +4,9 @@ import React,{useState,useEffect} from 'react'
 import {AuthService} from './AuthService'
 import {Link} from 'react-router-dom'
 import DescriptionsItem from 'antd/lib/descriptions/Item';
+import { Tabs } from 'antd';
+
+const { TabPane } = Tabs;
 
 
 function BusinessPreview(props){
@@ -142,32 +145,35 @@ const menu = (
 );
 
     return (
-      <div>  
-        <Descriptions title="Business Info" bordered column = {1} size = {"small"}>
-          <Descriptions.Item label="Id">{currentBusiness.id}</Descriptions.Item>
-          <Descriptions.Item label="Name">{currentBusiness.name}</Descriptions.Item>
-          <Descriptions.Item span={2} label="Merchant">{currentBusiness.merchant.name + " "+ currentBusiness.merchant.surname}</Descriptions.Item>
-          <Descriptions.Item label="Restaurant Feature" span={2} onClick= {(event)=> changeRestaurant(currentBusiness)}>
-            <Badge status={ currentBusiness.restaurantFeature?"success":"default"} text={ currentBusiness.restaurantFeature?"Yes":"No"} />
-          </Descriptions.Item>
-          <DescriptionsItem label ="Sync time" > {currentBusiness.syncTime}</DescriptionsItem>
-          <DescriptionsItem label = "Office Limit"> {currentBusiness.maxNumberOffices} </DescriptionsItem>
-          { currentBusiness.restaurantFeature ? <DescriptionsItem label = "Reservation Time">{currentBusiness.duration}</DescriptionsItem>:null}
-        </Descriptions>
-        <br/>
-        <br/>
-        <Dropdown overlay={menu}>
-            <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-                Edit Business <DownOutlined />
-            </a>
-        </Dropdown>
-        <br/>
-        <br/>
-        <h3>
-          Offices
-        </h3>
-        <Table columns={columns} dataSource={currentBusiness.offices} bordered />
-      </div>
+        <Tabs className="tabs" defaultActiveKey="1" size="large" >
+          <TabPane className= "tabPane" tab="Info" key="1">
+          
+            <Descriptions title="Business Info" bordered column = {1} size = {"small"}>
+              <Descriptions.Item label="Id">{currentBusiness.id}</Descriptions.Item>
+              <Descriptions.Item label="Name">{currentBusiness.name}</Descriptions.Item>
+              <Descriptions.Item span={2} label="Merchant">{currentBusiness.merchant.name + " "+ currentBusiness.merchant.surname}</Descriptions.Item>
+              <Descriptions.Item label="Restaurant Feature" span={2} onClick= {(event)=> changeRestaurant(currentBusiness)}>
+              <Badge status={ currentBusiness.restaurantFeature?"success":"default"} text={ currentBusiness.restaurantFeature?"Yes":"No"} />
+              </Descriptions.Item>
+              <DescriptionsItem label ="Sync time" > {currentBusiness.syncTime}</DescriptionsItem>
+              <DescriptionsItem label = "Office Limit"> {currentBusiness.maxNumberOffices} </DescriptionsItem>
+                { currentBusiness.restaurantFeature ? <DescriptionsItem label = "Reservation Time">{currentBusiness.duration}</DescriptionsItem>:null}
+            </Descriptions>
+            <br/>
+            <br/>
+            <Dropdown overlay={menu}>
+                <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                    Edit Business <DownOutlined />
+                </a>
+            </Dropdown>
+          </TabPane>
+          <TabPane tab ="Offices" className="tabPane" key="2">
+            <h3>
+              Offices
+            </h3>
+            <Table columns={columns} dataSource={currentBusiness.offices} bordered />
+          </TabPane>
+        </Tabs>
     )
 }
 export default BusinessPreview;

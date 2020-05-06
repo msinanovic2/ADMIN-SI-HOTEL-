@@ -4,7 +4,7 @@
 }
 .footerLayout{
   background-color: #003a8c;
-
+  color: white;
 }
 
 .LoginRound{
@@ -26,7 +26,7 @@
   text-align: center;
   display: flex;
   justify-content: space-around;
-  padding-top: 10vh;
+  padding-top: 5vh;
 }
 .QR{
   width: 20vh;

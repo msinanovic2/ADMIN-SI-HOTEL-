@@ -107,7 +107,7 @@ function App() {
                       <PrivateRoute path ="/business/:bid/office/:oid/cashregisterlimit" component ={CashRegisterLimit}/>
                     </div>
                  </Content>
-                 <Footer className="footerLayout">Footer</Footer>
+                 <Footer className="footerLayout">ETF Sarajevo</Footer>
                 </Layout>
                 </Router>
            </div>);
