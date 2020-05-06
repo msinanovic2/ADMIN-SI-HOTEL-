@@ -145,6 +145,7 @@ const menu = (
 );
 
     return (
+
         <Tabs className="tabs" defaultActiveKey="1" size="large" >
           <TabPane className= "tabPane" tab="Info" key="1">
           
@@ -174,6 +175,7 @@ const menu = (
             <Table columns={columns} dataSource={currentBusiness.offices} bordered />
           </TabPane>
         </Tabs>
+
     )
 }
 export default BusinessPreview;
