@@ -2,7 +2,9 @@ import { Descriptions, Badge, Table } from 'antd';
 import React, { useState, useEffect } from 'react'
 import { AuthService } from './AuthService'
 import { Link } from 'react-router-dom'
+import { Tabs } from 'antd';
 
+const { TabPane } = Tabs;
 
 function UserPreview({ match }) {
     useEffect(() => { getUser(); }, []);
@@ -35,7 +37,9 @@ function UserPreview({ match }) {
     }
 
     return (
-        <Descriptions title="User Info" bordered>
+        <Tabs className="tabs" defaultActiveKey="1" size="large" style ={{padding:"20pt"}} >
+        <TabPane className= "tabPane" tab="Info" key="1">
+        <Descriptions title="User Info" bordered column ={1} small>
             <Descriptions.Item label="Id">{currentUser.userId}</Descriptions.Item>
             <Descriptions.Item label="Name">{currentUser.name}</Descriptions.Item>
             <Descriptions.Item label="Surame">{currentUser.surname}</Descriptions.Item>
@@ -46,6 +50,9 @@ function UserPreview({ match }) {
             <Descriptions.Item label="Phone Number">{currentUser.phoneNumber}</Descriptions.Item>
             <Descriptions.Item label="Email">{currentUser.email}</Descriptions.Item>
         </Descriptions>
+        </TabPane>
+        </Tabs>
     )
+
 }
 export default UserPreview;

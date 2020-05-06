@@ -31,8 +31,14 @@ import Reservations from './Reservations';
 import WorkHour from './WorkHour';
 import CashRegisterLimit from './CashRegisterLimit';
 
+
 import * as SockJS from 'sockjs-client';
 import * as Stomp from 'stompjs';
+import { Layout } from 'antd';
+
+const { Header, Footer, Sider, Content } = Layout;
+
+
 
 const SERVER_URL = 'log-server-si.herokuapp.com/ws';
 let stompClient;
@@ -66,9 +72,14 @@ function App() {
 
   
     return (<div>           
+
               <Router  history= {history}>
-                 { currentUser?<Nav LoggedIn = {true} history={history}/>:<Nav LoggedIn = {false} history = {history}/> }
-                <div className="App">
+                <Layout>
+                  <Header className="headerLayout"> 
+                    { currentUser?<Nav LoggedIn = {true} history={history}/>:<Nav LoggedIn = {false} history = {history}/> }
+                  </Header>
+                  <Content>
+                    <div className="App">
                       <PrivateRoute exact path="/" component={HomePage} />
                       <PrivateRoute exact path= "/Business" component= {Buisness}/>
                       <Route path="/login" component={Login} /> 
@@ -94,8 +105,11 @@ function App() {
                       <PrivateRoute path = "/business/:bid/reservations" component ={Reservations}/>
                       <PrivateRoute path = "/business/:bid/office/:oid/workinghour" component = {WorkHour}/>
                       <PrivateRoute path ="/business/:bid/office/:oid/cashregisterlimit" component ={CashRegisterLimit}/>
-                </div>
-              </Router>
+                    </div>
+                 </Content>
+                 <Footer className="footerLayout">Footer</Footer>
+                </Layout>
+                </Router>
            </div>);
 
 }

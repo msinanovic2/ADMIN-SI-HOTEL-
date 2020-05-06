@@ -50,15 +50,6 @@ function User (){
             key:'e-mail',
         },
         {
-          title: 'Edit',
-          key: 'Edit',
-          render: (text, record) => (
-            <Link key={record.userId} to={"/user/edit/"+record.userId}>
-             Edit {record.name}
-            </Link>
-          ),
-        },
-        {
             title: 'Details',
             key: 'Details',
             render: (text, record) => (

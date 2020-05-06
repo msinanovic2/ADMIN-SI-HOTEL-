@@ -31,11 +31,11 @@ class Nav extends React.Component{
         )
     return (
             <div className="site-page-header-ghost-wrapper">
-                <PageHeader key="PH"
+                <PageHeader  className="pageHeader"
+                key="PH"
                     ghost={false}
                     onBack={() => window.history.back()}
                     title="Admin Web App"
-                    subTitle="This is a subtitle"
                     extra={[]}
                 >
                 </PageHeader>
