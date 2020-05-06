@@ -8,13 +8,13 @@ function UserRoles(props){
     const allRoles = [{id: 3, rolename: "ROLE_MERCHANT"},
                       {id: 2, rolename: "ROLE_MANAGER"},
                       {id: 8, rolename: "ROLE_OFFICEMAN"},
-                      {id: 6, rolename: "ROLE_CACHIER"},
+                      {id: 6, rolename: "ROLE_CASHIER"},
                       {id: 7, rolename: "ROLE_BARTENDER"},
                       {id: 5, rolename: "ROLE_PRW"},
                       {id: 4, rolename: "ROLE_WAREMAN"}
                      ]; // there are 8 roles, but role number 1 is admin which can't be selected
 
-    const allRolesName = ["ROLE_MERCHANT", "ROLE_MANAGER", "ROLE_OFFICEMAN", "ROLE_CACHIER", "ROLE_BARTENDER", "ROLE_PRW", "ROLE_WAREMAN"];
+    const allRolesName = ["ROLE_MERCHANT", "ROLE_MANAGER", "ROLE_OFFICEMAN", "ROLE_CASHIER", "ROLE_BARTENDER", "ROLE_PRW", "ROLE_WAREMAN"];
     const { Option } = Select; // for select role dropdown menu
 
 
@@ -162,7 +162,7 @@ async function  getUser()  {
 async function sendPutRequest(e) {
 
     
-    // POST request using fetch with async/await
+    // PUT request using fetch with async/await
 
     e.preventDefault();
 
