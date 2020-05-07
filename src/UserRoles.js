@@ -269,6 +269,7 @@ return (
 
     <div id="dropdownRoles">
     <Select
+    disabled = {isMerchant()}
     showSearch
     style={{ width: 160 }}
     placeholder="Select New Role"
