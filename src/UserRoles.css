@@ -1,25 +1,26 @@
 .select {
-    width: 260px;
+    width: 260px;   
     float: left;
     margin: 10% auto;
+    text-align: center;
 }
 
 #dropdownRoles, #addBtn {
-    float: left;
+    display: inline-block;
 }
 
 
 #dropdownRoles {
-    margin-right: 11%;
+    margin-right: 68%;
+    width:25%;
 }
 
 #addBtn {
-    width: 27%;
+    width: 25%;
+    margin-right: -20%;
 }
 
 #submit {
-
     margin: 30% auto;
     width: 60%; 
-    
 }

@@ -83,7 +83,7 @@ function handleCalendarChange(dates, dataStrings) {
                 }
             })
                 sum = sum.toFixed(2);
-                x.turnover = sum.toString() + " (KM)"; 
+                x.turnover = sum.toString() + " KM"; 
         })
 
     }

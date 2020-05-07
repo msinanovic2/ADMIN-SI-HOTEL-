@@ -5,18 +5,17 @@ import './UserRoles.css';
 
 function UserRoles(props){
 
-    const allRoles = [{id: 3, rolename: "ROLE_MERCHANT"},
-                      {id: 2, rolename: "ROLE_MANAGER"},
+    const allRoles = [{id: 2, rolename: "ROLE_MANAGER"},
                       {id: 8, rolename: "ROLE_OFFICEMAN"},
-                      {id: 6, rolename: "ROLE_CACHIER"},
+                      {id: 6, rolename: "ROLE_CASHIER"},
                       {id: 7, rolename: "ROLE_BARTENDER"},
                       {id: 5, rolename: "ROLE_PRW"},
                       {id: 4, rolename: "ROLE_WAREMAN"}
-                     ]; // there are 8 roles, but role number 1 is admin which can't be selected
+                     ]; // there are 8 roles, but role numbers 1 and 3 are admin and merchant respectively which can't be selected
 
-    const allRolesName = ["ROLE_MERCHANT", "ROLE_MANAGER", "ROLE_OFFICEMAN", "ROLE_CACHIER", "ROLE_BARTENDER", "ROLE_PRW", "ROLE_WAREMAN"];
+    const allRolesName = ["ROLE_MANAGER", "ROLE_OFFICEMAN", "ROLE_CASHIER", "ROLE_BARTENDER", "ROLE_PRW", "ROLE_WAREMAN"];
+
     const { Option } = Select; // for select role dropdown menu
-
 
     const [currentUser, setCurrentUser] = useState({
         userId:"",
@@ -33,9 +32,6 @@ function UserRoles(props){
 
     useEffect(()=>{getUser();},[]);
     
-
-
-
 async function  getUser()  {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -48,10 +44,9 @@ async function  getUser()  {
     const users = await data.json();
     users.map((x)=>{
         if(x.userId == props.match.params.id)
-             setCurrentUser(x);
+            setCurrentUser(x);
     })
 }
-
 
 let username = currentUser.username;
 let filterRoles = currentUser.roles;
@@ -67,9 +62,7 @@ for(var i = 0; i<selectRoles.length; i++) {
     selectRoles[i] =  <Option value={selectRoles[i]}>{selectRoles[i]}</Option>
 }
 
-
 console.log("user roles name = " + JSON.stringify(userRolesName));
-
 
 const [roles, setRoles] = useState(currentUser.roles);
 
@@ -98,8 +91,6 @@ function deleteTableRow(e, row) {
 }
 
 const [newRole, setNewRole] = useState(null);
-
-
 
 
 function addTableRow(e, newRole) {
@@ -164,7 +155,7 @@ async function sendPutRequest(e) {
     if(!check)
         return;
     
-    // POST request using fetch with async/await
+    // PUT request using fetch with async/await
 
     e.preventDefault();
 
@@ -199,15 +190,15 @@ async function sendPutRequest(e) {
     window.location.href = "/users";
 }
 
+function isMerchant(){
+    for (var i = 0; i<currentUser.roles.length; i++)
+        if (currentUser.roles[i].rolename == "ROLE_MERCHANT")
+            return true;
+    return false;
+}
 
 
 const columns = [
-
-    /*{
-        title: "Id",
-        dataIndex: 'id',
-        key: 'id'
-    },*/
     {
       title: 'Role Name',
       dataIndex: 'rolename',
@@ -217,12 +208,10 @@ const columns = [
       title: '',
       dataIndex: '',
       key: 'x',
-      //render: (row) => (<Button type="primary" danger onClick={(e) => deleteTableRow(e, row)}>Delete</Button>)
-      render: (row) => (<a onClick={(e) => deleteTableRow(e, row)}>Delete</a>)
+      render: (row) => (<Button disabled = {isMerchant()} type="primary" danger onClick={(e) => deleteTableRow(e, row)}>Delete</Button>),
+      align: 'right'
     }
 ];
-
-
 
 
   function onSelectRoleChange(value) {
@@ -268,7 +257,6 @@ return (
 
     <div>
 
-
     <h2>{username} Roles</h2>
 
     <div>
@@ -298,7 +286,7 @@ return (
     </div>
 
     <div id="addBtn">
-    <Button type="primary" onClick={(e) => addTableRow(e, newRole)} block="true">Add</Button>
+    <Button disabled ={isMerchant()} type="primary" onClick={(e) => addTableRow(e, newRole)} block="true">Add</Button>
     </div>
 
     </div>
@@ -306,10 +294,8 @@ return (
     <br></br>
 
     <div id="submit">
-    <Button disabled = {checkRoles()} type="primary" onClick={(e) => sendPutRequest(e)} block="true">Submit</Button>
+    <Button disabled = {checkRoles() || isMerchant()} type="primary" onClick={(e) => sendPutRequest(e)} block="true">Submit</Button>
     </div>
-
-
 
     </div>
    
