@@ -13,10 +13,10 @@ function Reservations(props){
 			headers: myHeaders,
 			body: JSON.stringify({duration: values.duration})
 		};
-		const data = await fetch(`https://main-server-si.herokuapp.com/api/business/${props.match.params.bid}/reservations/duration`, requestOptions)
+		const data = await fetch(`https://main-server-si.herokuapp.com/api/business/${props.match.params.id}/reservations/duration`, requestOptions)
 		console.log(data);
 		if (data.status == 200) {
-			props.history.push("/business/details/" + props.match.params.bid);
+			props.setCurrentBusiness({...props.currentBusiness,duration:values.duration});
 		}
 		// const duration = await data.json();
 	}
