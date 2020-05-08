@@ -42,7 +42,7 @@ function UserPreview({match}) {
 
     return (
 
-        <div style ={{marginRight:"-185pt"}}>
+        <div style ={{marginRight:"-185pt",width:"45%"}}>
 
             <Tabs className="tabs" defaultActiveKey="1" size="large" style ={{padding:"20pt"}}>
 
