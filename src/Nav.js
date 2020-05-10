@@ -8,16 +8,16 @@ class Nav extends React.Component{
     if(this.props.LoggedIn)
         return (
             <div className="site-page-header-ghost-wrapper">
-                <PageHeader
+                <PageHeader className="pageHeader"
                     ghost={false}
                     onBack={() => window.history.back()}
                     title="Admin Web App"
-                    subTitle="This is a subtitle"
                     extra={[
-                        <Link to="/business" key= "Business"> Business</Link>,
-                        <Link to="/users" key = "Users"> User</Link>,
-                        <Link to="/" key="home"> Home</Link>,
-                        <Link to ="/notifications" key = "notifications">Notifications</Link>,
+                        <Link className="linkic" to="/business" key= "Business"> Business</Link>,
+                        <Link className="linkic" to="/users" key = "Users"> User</Link>,
+                        <Link className="linkic" to="/" key="home"> Home</Link>,
+                        <Link className="linkic" to ="/notifications" key = "notifications">Notifications</Link>,
+                        <Link className="linkic" to="/business/turnover">Turnover</Link>,
                         <Button key="1" type="primary"  onClick = {(event)=>{
                             AuthService.logout();
                             this.props.history.push("/login");
@@ -31,13 +31,12 @@ class Nav extends React.Component{
         )
     return (
             <div className="site-page-header-ghost-wrapper">
-                <PageHeader key="PH"
+                <PageHeader  className="pageHeader"
+                key="PH"
                     ghost={false}
                     onBack={() => window.history.back()}
                     title="Admin Web App"
-                    subTitle="This is a subtitle"
-                    extra={[
-                        ]}
+                    extra={[]}
                 >
                 </PageHeader>
             </div>

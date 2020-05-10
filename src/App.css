@@ -1,21 +1,101 @@
 @import '~antd/dist/antd.css';
+#root{
+
+}
+.footerLayout{
+  background-color: #003a8c;
+  color: white;
+}
+
+.LoginRound{
+  border-radius: 10pt;
+  border: #003a8c;
+  border-color: #003a8c;
+  border-style: solid;
+  padding: 3%;
+  color: white;
+  background-color: #003a8c;
+}
+.loginheader{
+  color: white;
+}
+.ant-layout{
+  min-height: 100vh;
+}
 .App {
   text-align: center;
   display: flex;
   justify-content: space-around;
-  padding-top: 20vh;
+  padding-top: 5vh;
+}
+.QR{
+  width: 20vh;
+  height: 20vh;
+  justify-content: space-around;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
+.linkic{
+  color: white;
+}
 .Logout{
   display: flex;
   justify-content: space-around;
   align-items: center;
-  text-align: center;
-  
+  text-align: center; 
 }
+.headerLayout{
+  padding: 0%;
+}
+.pageHeader{
+  background-color: #003a8c;
+  color: white !important;
+  width: 100%;
+  height: 100%;
+}
+.ant-page-header-heading-title{
+  color: white;
+}
+.anticon-arrow-left{
+  color: white;
+}
+
+.MenuHome{
+  display: flex;
+  text-align: center;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+  width: 20%;
+}
+.OfficePreviewTable{
+  text-align: center;
+}
+.OfficePreviewInput, .OfficePreviewaddBtn {
+  float: left;
+}
+.tabs {
+  width: 60%;
+  padding-bottom: 20pt;
+}
+.tabPane{
+  width: 100%;
+}
+
+
+.OfficePreviewInput {
+  margin-right: 11%;
+}
+
+.OfficePreviewaddBtn {
+  width: 27%;
+}
+
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

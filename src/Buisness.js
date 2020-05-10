@@ -85,18 +85,7 @@ function Business(props) {
           See {record.name}
         </Link>
       ),
-    },
-    {
-      title: 'Change Restaurant Feature',
-      key: 'changeRestaurantFeature',
-      render: (text, record) => (
-        <Button type="primary" onClick={(event) => {
-          ChangeRestaurant({ ...record })
-        }}>
-          Change Restaurant Feature for {record.name}
-        </Button>
-      ),
-    },
+    }
   ];
 
   return (<div>
