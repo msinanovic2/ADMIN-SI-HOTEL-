@@ -50,15 +50,6 @@ function User (){
             key:'e-mail',
         },
         {
-          title: 'Edit',
-          key: 'Edit',
-          render: (text, record) => (
-            <Link key={record.userId} to={"/user/edit/"+record.userId}>
-             Edit {record.name}
-            </Link>
-          ),
-        },
-        {
             title: 'Details',
             key: 'Details',
             render: (text, record) => (
@@ -72,14 +63,6 @@ function User (){
             render: (text, record) => (
               <Link to={"/user/password/"+record.userId}>
                 Reset password for {record.username}
-              </Link>
-            ),
-          }, {
-            title: 'Change Role',
-            key: 'changeRple',
-            render: (text, record) => (
-              <Link to={"/user/roles/"+record.userId}>
-               Change Role for {record.name}
               </Link>
             ),
           },

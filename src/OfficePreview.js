@@ -235,14 +235,34 @@ function OfficePreview(props){
           },
        }
   ];
-  function changeLanguage(business){
-    alert("jezik");
+  async function changeLanguage(){
+    let language = "ENGLISH"
+    if(currentOffice.language =="ENGLISH"){
+        language = "BOSNIAN"
+    }
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization",AuthService.currentHeaderValue);
+    var requestOptions = {
+      method: 'PUT',
+      headers: myHeaders,
+      body: JSON.stringify({language:language})
+  };
+  const data = await fetch(`https://main-server-si.herokuapp.com/api/business/${props.match.params.bid}/offices/${props.match.params.oid}/language`, requestOptions)
+  const msg =  await data.json();
+  if(msg.statusCode===200){
+    setCurrentOffice({...currentOffice,language:language})
+
+  }
+
+
+    
   }
   
   const onClick = ({ key }) => {
     switch(key){
       case '1':
-          changeLanguage(currentOffice);
+          changeLanguage();
           break;
       case '2':
           props.history.push(`/business/${props.match.params.bid}/office/${props.match.params.oid}/workinghour`);

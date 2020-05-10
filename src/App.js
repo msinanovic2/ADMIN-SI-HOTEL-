@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import './App.css';
 import {BrowserRouter as Router,Route} from 'react-router-dom';
 import Login from './Login';
@@ -31,24 +31,55 @@ import Reservations from './Reservations';
 import WorkHour from './WorkHour';
 import CashRegisterLimit from './CashRegisterLimit';
 
-class App extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-        currentUser: null
-    };
-  }
+import * as SockJS from 'sockjs-client';
+import * as Stomp from 'stompjs';
+import { Layout } from 'antd';
 
-  componentDidMount() {
-    AuthService.currentUser.subscribe(x => this.setState({ currentUser: x }));
-  }
+const { Header, Footer, Sider, Content } = Layout;
 
-  render(){  
+
+
+const SERVER_URL = 'log-server-si.herokuapp.com/ws';
+let stompClient;
+
+function App() {
+
+  const [response, setResponse] = useState([]);
+  const [message, setMessage] = useState('');
+  const [currentUser,setCurrentUser] = useState(null);
+  useEffect(()=>{
+    Notification.requestPermission();
+    var notif;
+    AuthService.currentUser.subscribe(x =>setCurrentUser(x));
+    //notifications
+    const socket = new SockJS("https://log-server-si.herokuapp.com/ws");
+    stompClient = Stomp.over(socket);
+    // connect the stomp client
+    // first arg is headers,
+    // second arg is onConnected callback,
+    // third arg is onError callback
+    stompClient.connect({}, () => {
+      stompClient.subscribe(`/topic/admin`, msg => {
+        const data = JSON.parse(msg.body);
+        notif =  new Notification(data.payload.description,{})
+        setResponse(res => [data, ...res]);
+      });
+    }, err => console.error(err + "Greska"));
+
+  },[])
+  
+
+  
     return (<div>           
+
               <Router  history= {history}>
-                 { this.state.currentUser?<Nav LoggedIn = {true} history={history}/>:<Nav LoggedIn = {false} history = {history}/> }
-                <div className="App">
+                <Layout>
+                  <Header className="headerLayout"> 
+                    { currentUser?<Nav LoggedIn = {true} history={history}/>:<Nav LoggedIn = {false} history = {history}/> }
+                  </Header>
+                  <Content>
+                    <div className="App">
                       <PrivateRoute exact path="/" component={HomePage} />
                       <PrivateRoute exact path= "/Business" component= {Buisness}/>
                       <Route path="/login" component={Login} /> 
@@ -74,10 +105,13 @@ class App extends React.Component {
                       <PrivateRoute path = "/business/:bid/reservations" component ={Reservations}/>
                       <PrivateRoute path = "/business/:bid/office/:oid/workinghour" component = {WorkHour}/>
                       <PrivateRoute path ="/business/:bid/office/:oid/cashregisterlimit" component ={CashRegisterLimit}/>
-                </div>
-              </Router>
+                    </div>
+                 </Content>
+                 <Footer className="footerLayout">ETF Sarajevo</Footer>
+                </Layout>
+                </Router>
            </div>);
-  }
+
 }
 
 export default App;

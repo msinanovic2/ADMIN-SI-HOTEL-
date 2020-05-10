@@ -1,7 +1,8 @@
-import { Form, Input, Button} from 'antd';
+import { Form, Input, Button,message} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import React,{useEffect} from 'react'
 import {AuthService} from './AuthService'
+
 
 
 const NormalLoginForm = () => {
@@ -33,6 +34,7 @@ const NormalLoginForm = () => {
         }
         else{
           localStorage.clear();
+          message.error("Wrong username or password!");
         }
       })
       .catch(error =>
@@ -42,8 +44,9 @@ const NormalLoginForm = () => {
     
   };
 
-  return (
-    <Form
+  return (<div className = "LoginRound">
+    <h3 className="loginheader">Login</h3>
+    <Form 
       name="normal_login"
       className="login-form"
       initialValues={{
@@ -94,6 +97,7 @@ const NormalLoginForm = () => {
         {/* Or <a href="">register now!</a> */}
       </Form.Item>
     </Form>
+    </div>
   );
 };
 

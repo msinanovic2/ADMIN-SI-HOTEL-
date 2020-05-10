@@ -1,12 +1,25 @@
-import { Descriptions,Badge,Table, Button ,Menu, Dropdown} from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import { Descriptions,Badge,Table, Button ,Menu, Dropdown, Modal} from 'antd';
+import { DownOutlined,EditOutlined } from '@ant-design/icons';
 import React,{useState,useEffect} from 'react'
 import {AuthService} from './AuthService'
 import {Link} from 'react-router-dom'
 import DescriptionsItem from 'antd/lib/descriptions/Item';
+import { Tabs } from 'antd';
+import OfficeLimit from './OfficeLimit'
+import SyncTime from './SyncTime'
+import Reservations from './Reservations';
+import PlaceName from './PlaceName'
+
+const { TabPane } = Tabs;
 
 
 function BusinessPreview(props){
+  const [editOfficeVisible,setEditOfficeVisible] = useState(false);
+  const [editSyncVisible,setSyncVisible] = useState(false);
+  const [editReservationTimeVisible,setReservationTImeVisible] = useState(false);
+  const [editPlaceNameVisible,setPlaceNameVisible] = useState(false);
+  
+  
   useEffect(()=>{  getBuisness(); },[]);
   async function  getBuisness()  {
     var myHeaders = new Headers();
@@ -53,7 +66,7 @@ function changeRestaurant(business) {
  async  function deleteOffice(record){
         deleteOfficeRequest(props.match.params.id,record.id)
 }  
-const [currentBusiness,setCurrentBusiness] = useState({id:"1",name:"Test",offices :[{id:"1",address:"",phoneNumber:"",city:"",cashRegisters:[]}],restaurantFeature:false, merchant:{name:"",surname:""},syncTime:"",maxNumberOffices:""  });
+const [currentBusiness,setCurrentBusiness] = useState({id:"1",name:"Test",offices :[{id:"1",address:"",phoneNumber:"",city:"",cashRegisters:[]}],restaurantFeature:false, merchant:{name:"",surname:""},syncTime:"",maxNumberOffices:"",placeName:""  });
 
 const columns = [
       {
@@ -142,32 +155,53 @@ const menu = (
 );
 
     return (
-      <div>  
-        <Descriptions title="Business Info" bordered column = {1} size = {"small"}>
-          <Descriptions.Item label="Id">{currentBusiness.id}</Descriptions.Item>
-          <Descriptions.Item label="Name">{currentBusiness.name}</Descriptions.Item>
-          <Descriptions.Item span={2} label="Merchant">{currentBusiness.merchant.name + " "+ currentBusiness.merchant.surname}</Descriptions.Item>
-          <Descriptions.Item label="Restaurant Feature" span={2} onClick= {(event)=> changeRestaurant(currentBusiness)}>
-            <Badge status={ currentBusiness.restaurantFeature?"success":"default"} text={ currentBusiness.restaurantFeature?"Yes":"No"} />
-          </Descriptions.Item>
-          <DescriptionsItem label ="Sync time" > {currentBusiness.syncTime}</DescriptionsItem>
-          <DescriptionsItem label = "Office Limit"> {currentBusiness.maxNumberOffices} </DescriptionsItem>
-          { currentBusiness.restaurantFeature ? <DescriptionsItem label = "Reservation Time">Neko Vrijeme</DescriptionsItem>:null}
-        </Descriptions>
-        <br/>
-        <br/>
-        <Dropdown overlay={menu}>
-            <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-                Edit Business <DownOutlined />
-            </a>
-        </Dropdown>,
-        <br/>
-        <br/>
-        <h3>
-          Offices
-        </h3>
-        <Table columns={columns} dataSource={currentBusiness.offices} bordered />
-      </div>
+
+        <Tabs className="tabs" defaultActiveKey="1" size="large" >
+          <TabPane className= "tabPane" tab="Info" key="1">
+          
+            <Descriptions title="Business Info" bordered column = {1} size = {"small"}>
+              <Descriptions.Item label="Id">{currentBusiness.id+" "}  </Descriptions.Item>
+              <Descriptions.Item label="Name">{currentBusiness.name}</Descriptions.Item>
+              <Descriptions.Item span={2} label="Merchant">{currentBusiness.merchant.name + " "+ currentBusiness.merchant.surname}</Descriptions.Item>
+              <Descriptions.Item label="Restaurant Feature" span={2} >
+              <Badge status={ currentBusiness.restaurantFeature?"success":"default"} text={ currentBusiness.restaurantFeature?"Yes  ":"No  "} />
+              <EditOutlined onClick= {(event)=> changeRestaurant(currentBusiness)}/>
+              </Descriptions.Item>
+              <DescriptionsItem label ="Sync time" > {currentBusiness.syncTime +" "} <EditOutlined onClick={(event)=>{setSyncVisible(true)}}/> </DescriptionsItem>
+              <DescriptionsItem label = "Office Limit"> {currentBusiness.maxNumberOffices+" "} <EditOutlined onClick={(event)=>{setEditOfficeVisible(true)}} /> </DescriptionsItem>
+              { currentBusiness.restaurantFeature ? <DescriptionsItem label = "Reservation Time">{currentBusiness.duration + " "}<EditOutlined onClick={(event)=>{setReservationTImeVisible(true)}}/>  </DescriptionsItem>:null}
+              { currentBusiness.restaurantFeature ? <DescriptionsItem label = "Place name">{currentBusiness.placeName + " "}<EditOutlined onClick={(event)=>{setPlaceNameVisible(true)}} /></DescriptionsItem>:null}
+                
+            </Descriptions>
+            <Modal title = "Edit Office Limit" visible = {editOfficeVisible} okButtonProps = {{hidden:true}} onCancel = {(e)=>{setEditOfficeVisible(false)}}>
+              <OfficeLimit {...props} currentBusiness={currentBusiness} setCurrentBusiness={setCurrentBusiness}  />
+            </Modal>
+            <Modal title = "Edit Sync Time"visible = {editSyncVisible} okButtonProps = {{hidden:true}} onCancel = {(e)=>{setSyncVisible(false)}}>
+              <SyncTime {...props} currentBusiness={currentBusiness} setCurrentBusiness={setCurrentBusiness}  />
+            </Modal>
+            <Modal title = "Edit Reservation Time"visible = {editReservationTimeVisible} okButtonProps = {{hidden:true}} onCancel = {(e)=>{setReservationTImeVisible(false)}}>
+              <Reservations {...props} currentBusiness={currentBusiness} setCurrentBusiness={setCurrentBusiness}  />
+            </Modal>
+            <Modal title = "Edit Place Name" visible = {editPlaceNameVisible} okButtonProps = {{hidden:true}} onCancel = {(e)=>{setPlaceNameVisible(false)}}>
+              <PlaceName {...props} currentBusiness={currentBusiness} setCurrentBusiness={setCurrentBusiness}  />
+            </Modal>
+            <br/>
+            <br/>
+            <Dropdown hidden= {true} overlay={menu}>
+                <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                    Edit Business <DownOutlined />
+                </a>
+            </Dropdown>
+          </TabPane>
+          <TabPane tab ="Offices" className="tabPane" key="2">
+            <h3>
+              Offices
+            </h3>
+            <Table columns={columns} dataSource={currentBusiness.offices} bordered />
+          </TabPane>
+          
+        </Tabs>
+
     )
 }
 export default BusinessPreview;
