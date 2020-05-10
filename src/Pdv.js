@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {AuthService} from './AuthService'
-import { Form, Input, Button, Table, InputNumber} from 'antd';
+import { Badge, Button, Form, Input, InputNumber, Table} from 'antd';
+import { EditOutlined } from '@ant-design/icons';
 
 
 function PDV(){
@@ -31,28 +32,65 @@ function PDV(){
 		  var requestOptions = {
 			method: 'POST',
 			headers: myHeaders,
-			body: JSON.stringify({pdv: values.pdv})
+			body: JSON.stringify({pdv: values.pdv, active: values.active})
 		};
 		const data = await fetch(`https://main-server-si.herokuapp.com/api/pdv`, requestOptions)
-		const rate = await data.json();
-		if (rate.statusCode == 200) {
+		const dataJson = await data.json();
+		if (dataJson.statusCode == 200) {
 			var newRate = [];
 			for (let key in rates) {
-				newRate.push({"pdv": rates[key]["pdv"]});
+				newRate.push(rates[key]);
 			}
-			newRate.push({"pdv": values.pdv});
+			newRate.push({"pdv": values.pdv, "active": values.active});
 			setRates([...newRate]);
 		}
 		
-	}	
+	}
+	
+	async function switchActiveStatus(pdv) {
+		var myHeaders = new Headers();
+		myHeaders.append("Content-Type", "application/json");
+		myHeaders.append("Authorization", AuthService.currentHeaderValue);
+		var requestOptions = {
+			method: 'POST',
+			headers: myHeaders,
+			body: JSON.stringify({pdv: pdv})
+		};
+		const data = await fetch(`https://main-server-si.herokuapp.com/api/pdv/switch`, requestOptions);
+		const dataJson = await data.json();
+		if (dataJson.statusCode == 200) {
+			var newRates = rates.slice();
+			for (let key in newRates) {
+				if (newRates[key].pdv == pdv) {
+					newRates[key].active = !newRates[key].active;
+					setRates(newRates);
+					break;					
+				}
+			}
+		}
+	}
+	
 	
 	const columns = [
-      {
-      title: 'PDV',
-      dataIndex: 'pdv',
-      key: 'pdv',
-	  align: "center",
-      }
+		{
+			title: 'PDV',
+			dataIndex: 'pdv',
+			key: 'pdv',
+			align: "center",
+		},
+		{
+			title: 'Active',
+			key: 'active',
+			render: (text, record) => {
+				return (<div>
+					<Badge status={ record.active ? "success" : "default"} text={ record.active ? "Yes  " : "No  "} />
+					<span> </span>
+					<EditOutlined onClick= {(event)=> switchActiveStatus(record.pdv)}/>
+				</div>
+				)
+			},
+			align: "center",
+		},
 	]
 
     return (
@@ -65,7 +103,7 @@ function PDV(){
 			<Form.Item>
 			  <Button type="primary" htmlType="submit">
 				Add PDV
-			  </Button>
+			  </Button><br/><br/>
 			</Form.Item>
 		  </Form>
 		</div>
