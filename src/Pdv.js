@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import {AuthService} from './AuthService'
-import { Badge, Button, Form, Input, InputNumber, Table} from 'antd';
+import { Badge, Button, Form, Input, InputNumber, Table, Switch} from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 
 
@@ -73,7 +73,7 @@ function PDV(){
 	
 	const columns = [
 		{
-			title: 'PDV',
+			title: 'PDV (%)',
 			dataIndex: 'pdv',
 			key: 'pdv',
 			align: "center",
@@ -82,10 +82,9 @@ function PDV(){
 			title: 'Active',
 			key: 'active',
 			render: (text, record) => {
-				return (<div>
-					<Badge status={ record.active ? "success" : "default"} text={ record.active ? "Yes  " : "No  "} />
-					<span> </span>
-					<EditOutlined onClick= {(event)=> switchActiveStatus(record.pdv)}/>
+				return (
+				<div>
+					<Switch checked = {record.active} checkedChildren="Yes" unCheckedChildren="No" onClick= {(event)=> switchActiveStatus(record.pdv)} />
 				</div>
 				)
 			},
@@ -98,10 +97,10 @@ function PDV(){
 		  <Table  bordered columns={columns} dataSource={rates} /><br/>
 		  <Form name="customized_form_controls" layout="inline" onFinish={onFinishRate} validateMessages ={ {required : 'This field is required!'}}>
 			<Form.Item name="pdv" label="PDV amount" rules={[{ required:true }]}>
-			  <InputNumber min ={0}></InputNumber>
+			  <InputNumber min ={0} max = {100}></InputNumber>
 			</Form.Item>
 			<Form.Item>
-			  <Button type="primary" htmlType="submit">
+			  <Button style={{marginRight: "-30%"}} type="primary" htmlType="submit">
 				Add PDV
 			  </Button><br/><br/>
 			</Form.Item>

@@ -8,10 +8,10 @@ function MerchantAdd(props){
    
 const layout = {
   labelCol: {
-    span: 8,
+    span: 10,
   },
   wrapperCol: {
-    span: 16,
+    span: 26,
   },
 };
 const validateMessages = {
@@ -72,7 +72,18 @@ const validateMessages = {
   };
 
   return (
-    <Form {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
+
+    <div>
+
+    <div>
+      <h1 style = {{marginRight: "-30%"}}>Merchant Data</h1>
+    </div>
+
+    <br></br>
+
+    <div>
+
+      <Form {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
       <Form.Item name={['user', 'username']} label="Username" rules={[{required: true,},]}>
         <Input />
       </Form.Item>
@@ -100,20 +111,26 @@ const validateMessages = {
       <Form.Item name={['user', 'phoneNumber']} label="Phone Number" rules={[{required: true,}]}>
         <Input />
       </Form.Item>
-
       <Form.Item name={['user', 'jmbg']} label="JMBG" rules={[{required: true,},{len:13,message:"JMBG must have 13 characters"}]}>
         <Input />
       </Form.Item>
+      
       <Form.Item name={['user', 'dateOfBirth']} label="Date of Birth" rules={[{required: true,}]}>
-        <DatePicker format={'DD.MM.YYYY'} />
+        <DatePicker style = {{width: "100%"}} format={'DD.MM.YYYY'} />
       </Form.Item>
       
-      <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }} >
+      
+      <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 2 }} >
         <Button type="primary" htmlType="submit">
           Submit
         </Button>
       </Form.Item>
-    </Form>
+    </Form> 
+    </div>
+
+    </div>
+   
+  
   );
 
 

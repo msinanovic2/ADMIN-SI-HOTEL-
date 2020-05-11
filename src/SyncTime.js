@@ -44,18 +44,24 @@ function SyncTime(props){
 
 
 
-    return <div>
-        <h2>Time synchronization</h2>      
-        <Form name="customized_form_controls" layout="inline" onFinish={syncTime} validateMessages ={ {required : 'This field is required!'}}>
-            <Form.Item name="name" label="Sync time" rules={[{ required:true }]}>
-                <TimePicker defaultValue={moment('00:00', format)} format={format} />
-            </Form.Item>
-            <Form.Item>
-                <Button type="primary" htmlType="submit">
-                    Sync
-                </Button>
-            </Form.Item>
-        </Form></div>
+    return (
+  
+        
+        <div>
+                
+            <Form name="customized_form_controls" layout="inline" onFinish={syncTime} validateMessages ={ {required : 'This field is required!'}}>
+                <Form.Item name="name" label="Sync time" rules={[{ required:true }]}>
+                    <TimePicker defaultValue={moment('00:00', format)} format={format} />
+                </Form.Item>
+                <Form.Item>
+                    <Button style={{marginRight:"-20px"}} type="primary" htmlType="submit">
+                        Submit
+                    </Button>
+                </Form.Item>
+            </Form>
+        </div>
+
+    )
 }
 
 export default SyncTime

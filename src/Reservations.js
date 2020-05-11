@@ -23,15 +23,13 @@ function Reservations(props){
 
     return (
 		<div>
-			<h3>Reservations</h3>
-			<br/>
 			<Form name="customized_form_controls" layout="inline" onFinish={onFinish} validateMessages ={ {required : 'This field is required!'}}>
 				<Form.Item name="duration" label="Duration" rules={[{ required:true }]}>
 				  <InputNumber min ={0}></InputNumber>
 				</Form.Item>
 				<Form.Item>
-				  <Button type="primary" htmlType="submit">
-					Change Duration
+				  <Button style={{marginRight: "-20%"}} type="primary" htmlType="submit">
+					Submit
 				  </Button>
 				</Form.Item>
 			</Form>

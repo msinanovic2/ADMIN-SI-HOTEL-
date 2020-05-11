@@ -136,7 +136,7 @@ return (
     <h2>Business Turnovers</h2>
 
     <div>
-        <RangePicker onCalendarChange = {(dates, dataStrings) => {handleCalendarChange(dates, dataStrings);}}/>
+        <RangePicker format={'DD.MM.YYYY'} onCalendarChange = {(dates, dataStrings) => {handleCalendarChange(dates, dataStrings);}}/>
     </div>
 
     <br></br>

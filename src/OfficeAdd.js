@@ -41,10 +41,10 @@ function OfficeAdd(props)
      
 const layout = {
     labelCol: {
-      span: 8,
+      span: 10,
     },
     wrapperCol: {
-      span: 16,
+      span: 26,
     },
   };
   const validateMessages = {
@@ -57,12 +57,32 @@ const layout = {
       range: 'Must be between ${min} and ${max}',
     },
   };
+  const tailLayout = {
+    wrapperCol: {
+      offset: 4,
+      span: 16,
+    },
+  };
   
     const onFinish = values => {
         addOffice(values)
     };
   
     return (
+
+    <div>
+
+    
+
+
+    <div style = {{width: "30%", position: "absolute", top: "50%", left: "50%", marginTop: "-14%", marginLeft: "-18%"}}>
+
+    <div>
+      <h1 style = {{marginRight: "-7%"}}>Office Data</h1>
+    </div>
+
+    <br></br>
+      
       <Form {...layout} label="Add Office" name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
         <Form.Item name={['office', 'email']} label="Email" rules={[ { type: 'email',},{required:true}]}>
           <Input />
@@ -80,15 +100,18 @@ const layout = {
           <Input />
         </Form.Item>
         <Form.Item name={['office', 'time']} label="Working hours" rules={[{required: true,}]}>
-          <RangePicker/>
+          <RangePicker style = {{width: "100%"}}></RangePicker>
         </Form.Item>
      
-        <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }} >
+        <Form.Item {...tailLayout} >
           <Button type="primary" htmlType="submit">
             Submit
           </Button>
         </Form.Item>
       </Form>
+    </div>
+
+    </div>  
     );
 
 
