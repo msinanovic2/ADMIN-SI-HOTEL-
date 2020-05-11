@@ -12,6 +12,11 @@ function PDV(){
 	
 	const [rates, setRates] = useState([]);
 	
+	function rateOrder(r1, r2) {
+		return ((((r1.active && r2.active) || !(r1.active || r2.active)) && r1.pdv <= r2.pdv)
+			|| (r1.active && !r2.active)) ? -1 : 1;
+	}
+	
 	async function getRates(){
 		var myHeaders = new Headers();
 		myHeaders.append("Content-Type", "application/json");
@@ -20,8 +25,9 @@ function PDV(){
 			method: 'GET',
 			headers: myHeaders,
 		};
-		const data = await fetch(`https://main-server-si.herokuapp.com/api/pdv`, requestOptions)
-		const rates = await data.json();
+		const data = await fetch(`https://main-server-si.herokuapp.com/api/pdv`, requestOptions);
+		var rates = await data.json();
+		rates.sort(rateOrder);
 		setRates(rates);
 	}
 	
