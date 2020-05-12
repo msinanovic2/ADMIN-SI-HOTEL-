@@ -150,8 +150,7 @@ function NotificationsList() {
 
     }
 
-
-    function reject(notificationId) {
+    function reject(notificationId, open, businessId) {
         console.log(notificationId);
 
         var myHeaders = new Headers();
@@ -161,7 +160,26 @@ function NotificationsList() {
             method: 'POST',
             headers: myHeaders
         };
-        //LINK/api/business/{businessId} (GET)
+
+        if(open === "Otvaranje office-a"){
+            ///api/notifications/{businessId}/open/reject/{notificationId} rejectOfficeOpeni
+            let link = `https://main-server-si.herokuapp.com/api/notifications/${businessId}/open/reject/${notificationId}`;
+            fetch(link, requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                console.log("Openning office rejected successfully");
+            });
+
+        } else {
+            // Rejecter office closing
+            // /api/notifications/{businessId}/close/reject/{notificationId}
+            let link = `https://main-server-si.herokuapp.com/api/notifications/${businessId}/close/reject/${notificationId}`;
+            fetch(link, requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                console.log("Closing office rejected successfully");
+            });
+        }
 
         let url = "https://main-server-si.herokuapp.com/api/notifications/admin/read/" + notificationId;
         fetch(url, requestOptions)
@@ -169,9 +187,8 @@ function NotificationsList() {
             .then(result => {
                 alert("Notification deleted");
                 window.location.href = "/notifications";
-            })
+            });
     }
-
 
     const columns = [
         {
@@ -213,7 +230,7 @@ function NotificationsList() {
             title: 'Reject request',
             key: 'Reject',
             render: (text, record) => (
-                <Button type="primary" onClick={(event) => { reject(record.id); }}>
+                <Button type="primary" onClick={(event) => { reject(record.id, record.open, record.businessId); }}>
                     Reject
                 </Button>
             ),
