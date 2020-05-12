@@ -205,7 +205,7 @@ const columns = [
       key: 'rolename'
     },  
     {
-      title: '',
+      title: 'Delete Role',
       dataIndex: '',
       key: 'x',
       render: (row) => (<Button disabled = {isMerchant()} type="primary" danger onClick={(e) => deleteTableRow(e, row)}>Delete</Button>),
