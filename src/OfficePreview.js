@@ -300,6 +300,8 @@ function OfficePreview(props){
             </Dropdown>
   */
     return (
+      <div style ={{marginRight:"-300pt",width:"80%"}}>
+
         <Tabs  className="tabs" defaultActiveKey="1" size="large" >
 
           <TabPane className= "tabPane" tab="Info" key="1">
@@ -340,7 +342,7 @@ function OfficePreview(props){
                 <Input/>
               </Form.Item>
               <Form.Item>
-                <Button style={{marginRight: "-590%"}} type="primary" htmlType="submit">
+                <Button style={{marginRight: "-335%"}} type="primary" htmlType="submit">
                 Add Cash Register
                 </Button>
               </Form.Item>
@@ -358,7 +360,7 @@ function OfficePreview(props){
                   <InputNumber style={{width: "100%", display: "inline-block", marginRight: "100%"}} min ={0}></InputNumber>
                 </Form.Item>
                 <Form.Item>
-                  <Button style={{width: "100%", display: "inline-block", marginLeft: "561%"}} type="primary" htmlType="submit">
+                  <Button style={{width: "100%", display: "inline-block", marginRight: "-706%"}} type="primary" htmlType="submit">
                     Add Table
                   </Button>
                 </Form.Item>
@@ -366,6 +368,7 @@ function OfficePreview(props){
               </div>
           </TabPane>
   </Tabs>
+  </div>
     )
 }
 export default OfficePreview;
