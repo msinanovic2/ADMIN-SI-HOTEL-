@@ -1,4 +1,4 @@
-import { Descriptions,Badge,Table, Button ,Menu, Dropdown, Modal} from 'antd';
+import { Descriptions,Badge,Table, Button ,Menu, Dropdown, Modal, Switch} from 'antd';
 import { DownOutlined,EditOutlined } from '@ant-design/icons';
 import React,{useState,useEffect} from 'react'
 import {AuthService} from './AuthService'
@@ -74,6 +74,7 @@ const columns = [
         dataIndex: 'id',
         key: 'id', 
         render: text => <a>{text}</a>,
+        align: 'right'
       },
       {
         title: 'Address',
@@ -95,7 +96,8 @@ const columns = [
         key:'cashRegisters',
         render: cashRegisters=>{
              return cashRegisters.length;
-        }
+        },
+        align: 'right'
       },
        {
         title :'See report',
@@ -126,7 +128,8 @@ const columns = [
                deleteOffice({...record})}}> 
                Delete Office
              </Button>
-          }
+          },
+          align: 'center'
         },
 ];
 const onClick = ({ key }) => {
@@ -145,6 +148,8 @@ const onClick = ({ key }) => {
         break;
   }
 };
+
+
 const menu = (
   <Menu onClick={onClick}>
     <Menu.Item key="1">Change Restaurant Feature</Menu.Item>
@@ -154,44 +159,52 @@ const menu = (
   </Menu>
 );
 
+
+/*<Badge status={ currentBusiness.restaurantFeature?"success":"default"} text = {currentBusiness.restaurantFeature ? "Yes" : "No"} />
+              <EditOutlined onClick= {(event)=> changeRestaurant(currentBusiness)}/>*/
+
+              /*<Dropdown hidden= {true} overlay={menu}>
+                <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                    Edit Business <DownOutlined />
+                </a>
+            </Dropdown>*/
+
     return (
 
         <Tabs className="tabs" defaultActiveKey="1" size="large" >
           <TabPane className= "tabPane" tab="Info" key="1">
           
-            <Descriptions title="Business Info" bordered column = {1} size = {"small"}>
+            <Descriptions title="Business Info" bordered={true} column = {1} size = {"small"}>
               <Descriptions.Item label="Id">{currentBusiness.id+" "}  </Descriptions.Item>
               <Descriptions.Item label="Name">{currentBusiness.name}</Descriptions.Item>
-              <Descriptions.Item span={2} label="Merchant">{currentBusiness.merchant.name + " "+ currentBusiness.merchant.surname}</Descriptions.Item>
+              <Descriptions.Item span={1} label="Merchant">{currentBusiness.merchant.name + " "+ currentBusiness.merchant.surname}</Descriptions.Item>
               <Descriptions.Item label="Restaurant Feature" span={2} >
-              <Badge status={ currentBusiness.restaurantFeature?"success":"default"} text={ currentBusiness.restaurantFeature?"Yes  ":"No  "} />
-              <EditOutlined onClick= {(event)=> changeRestaurant(currentBusiness)}/>
+              
+              <Switch checked = {currentBusiness.restaurantFeature} checkedChildren="Yes" unCheckedChildren="No" onClick= {(event)=> changeRestaurant(currentBusiness)} />
+
               </Descriptions.Item>
-              <DescriptionsItem label ="Sync time" > {currentBusiness.syncTime +" "} <EditOutlined onClick={(event)=>{setSyncVisible(true)}}/> </DescriptionsItem>
+              <DescriptionsItem label ="Sync time"> {currentBusiness.syncTime + " "}<EditOutlined onClick={(event)=>{setSyncVisible(true)}}/> </DescriptionsItem>
               <DescriptionsItem label = "Office Limit"> {currentBusiness.maxNumberOffices+" "} <EditOutlined onClick={(event)=>{setEditOfficeVisible(true)}} /> </DescriptionsItem>
-              { currentBusiness.restaurantFeature ? <DescriptionsItem label = "Reservation Time">{currentBusiness.duration + " "}<EditOutlined onClick={(event)=>{setReservationTImeVisible(true)}}/>  </DescriptionsItem>:null}
+              { currentBusiness.restaurantFeature ? <DescriptionsItem label = "Reservation Duration">{currentBusiness.duration + " "}<EditOutlined onClick={(event)=>{setReservationTImeVisible(true)}}/>  </DescriptionsItem>:null}
               { currentBusiness.restaurantFeature ? <DescriptionsItem label = "Place name">{currentBusiness.placeName + " "}<EditOutlined onClick={(event)=>{setPlaceNameVisible(true)}} /></DescriptionsItem>:null}
-                
             </Descriptions>
+
             <Modal title = "Edit Office Limit" visible = {editOfficeVisible} okButtonProps = {{hidden:true}} onCancel = {(e)=>{setEditOfficeVisible(false)}}>
               <OfficeLimit {...props} currentBusiness={currentBusiness} setCurrentBusiness={setCurrentBusiness}  />
             </Modal>
             <Modal title = "Edit Sync Time"visible = {editSyncVisible} okButtonProps = {{hidden:true}} onCancel = {(e)=>{setSyncVisible(false)}}>
               <SyncTime {...props} currentBusiness={currentBusiness} setCurrentBusiness={setCurrentBusiness}  />
             </Modal>
-            <Modal title = "Edit Reservation Time"visible = {editReservationTimeVisible} okButtonProps = {{hidden:true}} onCancel = {(e)=>{setReservationTImeVisible(false)}}>
+            <Modal title = "Edit Reservation Duration"visible = {editReservationTimeVisible} okButtonProps = {{hidden:true}} onCancel = {(e)=>{setReservationTImeVisible(false)}}>
               <Reservations {...props} currentBusiness={currentBusiness} setCurrentBusiness={setCurrentBusiness}  />
             </Modal>
             <Modal title = "Edit Place Name" visible = {editPlaceNameVisible} okButtonProps = {{hidden:true}} onCancel = {(e)=>{setPlaceNameVisible(false)}}>
               <PlaceName {...props} currentBusiness={currentBusiness} setCurrentBusiness={setCurrentBusiness}  />
             </Modal>
+
             <br/>
-            <br/>
-            <Dropdown hidden= {true} overlay={menu}>
-                <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-                    Edit Business <DownOutlined />
-                </a>
-            </Dropdown>
+
+          
           </TabPane>
           <TabPane tab ="Offices" className="tabPane" key="2">
             <h3>

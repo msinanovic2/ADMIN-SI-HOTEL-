@@ -1,7 +1,8 @@
-import { Descriptions, Badge, Table, Button, Input ,Form,Menu, Dropdown ,InputNumber} from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import { Descriptions, Badge, Table, Button, Input ,Form,Menu, Dropdown ,InputNumber, Modal} from 'antd';
+import { DownOutlined, EditOutlined } from '@ant-design/icons';
 import DescriptionsItem from 'antd/lib/descriptions/Item';
-
+import CashRegisterLimit from './CashRegisterLimit';
+import WorkHour from './WorkHour';
 import React,{useState, useEffect} from 'react'
 import {AuthService} from './AuthService'
 import {Link} from 'react-router-dom'
@@ -10,6 +11,10 @@ import { Tabs } from 'antd';
 const { TabPane } = Tabs;
 
 function OfficePreview(props){
+
+  const [editLimitVisible,setLimitVisible] = useState(false);
+  const [editWorkHoursVisible,setWorkHoursVisible] = useState(false);
+
     useEffect(()=>{
       getOffice();
       getTables();
@@ -172,14 +177,16 @@ function OfficePreview(props){
   }
   const columnsTables = [
     {
-      title: 'id',
+      title: 'Id',
       dataIndex: 'id',
       key: 'id',
+      align: 'right'
       },
       {
       title: 'Table number',
       dataIndex: 'tableNumber',
       key: 'name',
+      align: 'right'
       },{
       title: 'Delete Table',
       key: 'delete',
@@ -191,16 +198,18 @@ function OfficePreview(props){
                Delete Table
              </Button>
           },
+          align: 'center'
        }
   ]
 	const columns = [
 	  {
-		title: 'id',
+		title: 'Id',
 		dataIndex: 'id',
-		key: 'id',
+    key: 'id',
+    align: 'right'
 	  },
 	  {
-		title: 'name',
+		title: 'Name',
 		dataIndex: 'name',
 		key: 'name',
 	  },
@@ -224,6 +233,7 @@ function OfficePreview(props){
              Delete Cash Register
            </Button>
         },
+        align: 'center'
 	   }, {
       title: 'Change UUID',
           key: 'uuid',
@@ -233,6 +243,7 @@ function OfficePreview(props){
                Change UUID
              </Button>
           },
+          align: 'center'
        }
   ];
   async function changeLanguage(){
@@ -276,14 +287,25 @@ function OfficePreview(props){
   const menu = (
     <Menu onClick={onClick}>
       <Menu.Item key="1">Change Language</Menu.Item>
-      <Menu.Item key="2">Change Working Hour</Menu.Item>
+      <Menu.Item key="2">Change Working Hours</Menu.Item>
       <Menu.Item key="3">Change Cash Register Limit</Menu.Item>  
     </Menu>
   );
+
+  /*
+<Dropdown overlay={menu}>
+              <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                  Edit Office <DownOutlined />
+              </a>
+            </Dropdown>
+  */
     return (
-        <Tabs className="tabs" defaultActiveKey="1" size="large" >
+      <div style ={{marginRight:"-300pt",width:"80%"}}>
+
+        <Tabs  className="tabs" defaultActiveKey="1" size="large" >
+
           <TabPane className= "tabPane" tab="Info" key="1">
-            <div>
+         
             <Descriptions  title="Office Info" bordered column ={1} >
               <Descriptions.Item label="Id">{currentOffice.id}</Descriptions.Item>
               <Descriptions.Item label="Address">{currentOffice.address}</Descriptions.Item>
@@ -291,22 +313,27 @@ function OfficePreview(props){
               <Descriptions.Item label="Country">{currentOffice.country}</Descriptions.Item>
               <Descriptions.Item label="Phone Number">{currentOffice.phoneNumber}</Descriptions.Item>
               <Descriptions.Item label="Email">{currentOffice.email}</Descriptions.Item>
-              <Descriptions.Item label ="Cash Register Limit">{currentOffice.maxNumberCashRegisters}</Descriptions.Item>
-              <Descriptions.Item label ="Language">{currentOffice.language}</Descriptions.Item>
-              <Descriptions.Item label ="Working hours">{currentOffice.workDayStart + "-" + currentOffice.workDayEnd}</Descriptions.Item>
+              <Descriptions.Item label ="Cash Register Limit">{currentOffice.maxNumberCashRegisters} <EditOutlined onClick={(event)=>{setLimitVisible(true)}}/> </Descriptions.Item>
+              <Descriptions.Item label ="Language">{currentOffice.language} <EditOutlined onClick= {(event)=> changeLanguage(currentOffice)}/> </Descriptions.Item>
+              <Descriptions.Item label ="Working hours">{currentOffice.workDayStart + "-" + currentOffice.workDayEnd} <EditOutlined onClick={(event)=>{setWorkHoursVisible(true)}}/> </Descriptions.Item>
               {currentOffice.manager.name?<Descriptions.Item span={2} label="Manager">{`${currentOffice.manager.name} ${currentOffice.manager.surname}`}</Descriptions.Item>:null} 
             </Descriptions>
+
+            <Modal title = "Edit Cash Register Limit" visible = {editLimitVisible} okButtonProps = {{hidden:true}} onCancel = {(e)=>{setLimitVisible(false)}}>
+              <CashRegisterLimit {...props} currentOffice={currentOffice} setCurrentOffice={setCurrentOffice}  />
+            </Modal>
+            <Modal title = "Edit Work Hours" visible = {editWorkHoursVisible} okButtonProps = {{hidden:true}} onCancel = {(e)=>{setWorkHoursVisible(false)}}>
+              <WorkHour {...props} currentOffice={currentOffice} setCurrentOffice={setCurrentOffice}  />
+            </Modal>
+
             <br/>
-            <br/>
-            <Dropdown overlay={menu}>
-              <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-                  Edit Office <DownOutlined />
-              </a>
-            </Dropdown>
-            </div>
+
           </TabPane>
+
+          
           <TabPane className="tabPane" tab="Cash Registers"  key="2">
             <h3>Cash Registers</h3>
+            <div>
 			      <Table  bordered columns={columns} dataSource={currentOffice.cashRegisters}  /> 
             <br/>
             <br/>
@@ -315,29 +342,33 @@ function OfficePreview(props){
                 <Input/>
               </Form.Item>
               <Form.Item>
-                <Button type="primary" htmlType="submit">
+                <Button style={{marginRight: "-335%"}} type="primary" htmlType="submit">
                 Add Cash Register
                 </Button>
               </Form.Item>
             </Form>
+            </div>
           </TabPane>
+          
+
           <TabPane className="tabPane" tab="Tables" key="3" disabled ={!restaurantFeature?true:false}>
-              <h3>Tables</h3> 
+              <h3>Tables</h3>
+              <div>
               <Table  bordered columns={columnsTables} dataSource={tables}  /><br/>
-              <Form name="customized_form_controls" layout="inline" onFinish={onFinishTable} validateMessages ={ {required : 'This field is required!'}}>
+              <Form style = {{width: "100%", float: "left", textAlign: "center"}} name="customized_form_controls" layout="inline" onFinish={onFinishTable} validateMessages ={ {required : 'This field is required!'}}>
                 <Form.Item name="number" label="Table number" rules={[{ required:true }]}>
-                  <InputNumber min ={0}></InputNumber>
+                  <InputNumber style={{width: "100%", display: "inline-block", marginRight: "100%"}} min ={0}></InputNumber>
                 </Form.Item>
                 <Form.Item>
-                  <Button type="primary" htmlType="submit">
+                  <Button style={{width: "100%", display: "inline-block", marginRight: "-706%"}} type="primary" htmlType="submit">
                     Add Table
                   </Button>
                 </Form.Item>
               </Form>
+              </div>
           </TabPane>
   </Tabs>
-        
-    
+  </div>
     )
 }
 export default OfficePreview;

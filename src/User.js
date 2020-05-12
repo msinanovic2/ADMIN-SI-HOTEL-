@@ -29,6 +29,7 @@ function User (){
           dataIndex: 'userId',
           key: 'userId', 
           render: text => <a>{text}</a>,
+          align: 'right'
         },
         {
           title: 'Name',

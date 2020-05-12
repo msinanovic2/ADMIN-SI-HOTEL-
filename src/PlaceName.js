@@ -28,7 +28,7 @@ function PlaceName(props){
                 </Form.Item>
                 <Form.Item>
                     <Button type="primary" htmlType="submit">
-                        Change Place Name
+                        Submit
                     </Button>
                 </Form.Item>
             </Form>

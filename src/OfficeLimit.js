@@ -6,7 +6,14 @@ import { InputNumber } from 'antd';
 
 
 function OfficeLimit(props){
-    const layout = {labelCol: {span: 18,},wrapperCol: {span: 26,},};
+
+    const layout = {labelCol: {span: 12,},wrapperCol: {span: 26,},};
+    const tailLayout = {
+      wrapperCol: {
+        offset: 4,
+        span: 16,
+      },
+    };
     function onFinish(values){
     if(values.maxNumber<props.currentBusiness.offices.length){
       message.error("Office Limit is lower than current number of offices!");
@@ -33,15 +40,21 @@ function OfficeLimit(props){
             }
           })
     }
-    return <Form {...layout} layout="inline" name="nest-messages" onFinish={onFinish} validateMessages ={ {required : 'This field is required!'}}>
-    <Form.Item name="maxNumber" label="Office Limit: " min={1} >
-    <InputNumber min={1}/>
-    </Form.Item>
-    <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }} >
-      <Button type="primary" htmlType="submit">
-        Submit
-      </Button>
-    </Form.Item>
-  </Form>
+    return (
+    <div>
+      <Form layout="inline" name="nest-messages" onFinish={onFinish} validateMessages ={ {required : 'This field is required!'}}>
+        <Form.Item name="maxNumber" label="Office Limit: " min={1} rules={[{required: true,}]}>
+          <InputNumber min={1}/>
+        </Form.Item>
+        <Form.Item >
+          <Button style = {{marginRight: "-20%"}} type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
+  </div>
+
+
+  )
 }
 export default OfficeLimit

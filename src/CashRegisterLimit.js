@@ -4,7 +4,7 @@ import {AuthService} from './AuthService'
 import { InputNumber } from 'antd';
 
 function CashRegisterLimit(props){
-    const layout = {labelCol: {span: 18,},wrapperCol: {span: 26,},};
+    const layout = {labelCol: {span: 15,},wrapperCol: {span: 26,},};
     function onFinish(values){
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -27,15 +27,19 @@ function CashRegisterLimit(props){
             }
           })
     }
-    return <Form {...layout} layout="inline" name="nest-messages" onFinish={onFinish} validateMessages ={ {required : 'This field is required!'}}>
-    <Form.Item name="maxNumber" label="Cash Register Limit: " min={1} >
+    return (
+    <div>
+    <Form {...layout} layout="inline" name="nest-messages" onFinish={onFinish} validateMessages ={ {required : 'This field is required!'}}>
+    <Form.Item name="maxNumber" label="Cash Register Limit: " min={1} rules={[{required: true,}]}>
     <InputNumber min={1}/>
     </Form.Item>
-    <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }} >
-      <Button type="primary" htmlType="submit">
+    <Form.Item >
+      <Button style={{marginRight:"-20%"}} type="primary" htmlType="submit">
         Submit
       </Button>
     </Form.Item>
   </Form>
+  </div>
+  )
 }
 export default CashRegisterLimit

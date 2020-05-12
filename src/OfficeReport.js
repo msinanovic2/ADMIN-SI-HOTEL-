@@ -43,13 +43,14 @@ function OfficeReport({ match }) {
                 daily+=x.dailyProfit;
                 totalProfit+=x.totalProfit;
             })
-            setReport({dailyProfit:daily,totalProfit:totalProfit});
+            setReport({dailyProfit:daily.toFixed(2),totalProfit:totalProfit.toFixed(2)});
     }
 
     return (
-        <Descriptions title={`Financial report for ${currentOffice.address}`} bordered column={1}>
-          <Descriptions.Item label = "Daily Profit">{report.dailyProfit} </Descriptions.Item>
-          <Descriptions.Item label = "Total Profit">{report.totalProfit} </Descriptions.Item>          
+        <Descriptions style = {{width: "30%", position: "absolute", top: "50%", left: "50%", marginTop: "-5.5%",
+        marginLeft: "-15%"}} title={`Financial Report for ${currentOffice.address}`} bordered column={1}>
+          <Descriptions.Item label = "Daily Profit">{report.dailyProfit + " KM"}</Descriptions.Item>
+          <Descriptions.Item label = "Total Profit">{report.totalProfit + " KM"}</Descriptions.Item>          
         </Descriptions>
     )
 }

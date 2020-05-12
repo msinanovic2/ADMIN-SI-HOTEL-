@@ -5,6 +5,14 @@ import {AuthService} from './AuthService'
 
 const { RangePicker } = TimePicker;
 function WorkHour(props){
+
+  const layout = {labelCol: {span: 8,}, wrapperCol: {span: 16,},};
+    const tailLayout = {
+      wrapperCol: {
+        offset: 4 ,
+        span: 16,
+      },
+    };
 async function onFinishWorkHour (values){
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -28,17 +36,19 @@ async function onFinishWorkHour (values){
             }
           })
 }
-    return <div>
-       <Form name="customized_form_controls" layout="inline" onFinish={onFinishWorkHour} validateMessages ={ {required : 'This field is required!'}}>
-       <Form.Item name={['office', 'time']} label="Working hours" rules={[{required: true,}]}>
+    return (
+    <div>
+       <Form {...layout} style = {{display: "inline-block"}} layout = "inline" name="customized_form_controls" onFinish={onFinishWorkHour} validateMessages ={ {required : 'This field is required!'}}>
+       <Form.Item style = {{float: "left"}} name={['office', 'time']} label="Working hours: " rules={[{required: true,}]}>
           <RangePicker/>
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">
-            Add Working Hours
+            Submit
           </Button>
         </Form.Item>
       </Form>
     </div>
+    )
 }
 export default WorkHour;
