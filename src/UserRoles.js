@@ -209,7 +209,7 @@ const columns = [
       dataIndex: '',
       key: 'x',
       render: (row) => (<Button disabled = {isMerchant()} type="primary" danger onClick={(e) => deleteTableRow(e, row)}>Delete</Button>),
-      align: 'right'
+      align: 'center'
     }
 ];
 

@@ -45,6 +45,7 @@ function Business(props) {
       dataIndex: 'id',
       key: 'id',
       render: text => <a>{text}</a>,
+      align: 'right'
     },
     {
       title: 'Name',
@@ -65,7 +66,8 @@ function Business(props) {
       key: 'offices',
       render: offices => {
         return offices.length;
-      }
+      },
+      align: 'right'
     },
 
     {

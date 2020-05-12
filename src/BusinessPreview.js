@@ -74,6 +74,7 @@ const columns = [
         dataIndex: 'id',
         key: 'id', 
         render: text => <a>{text}</a>,
+        align: 'right'
       },
       {
         title: 'Address',
@@ -95,7 +96,8 @@ const columns = [
         key:'cashRegisters',
         render: cashRegisters=>{
              return cashRegisters.length;
-        }
+        },
+        align: 'right'
       },
        {
         title :'See report',
@@ -126,7 +128,8 @@ const columns = [
                deleteOffice({...record})}}> 
                Delete Office
              </Button>
-          }
+          },
+          align: 'center'
         },
 ];
 const onClick = ({ key }) => {

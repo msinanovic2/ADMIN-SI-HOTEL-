@@ -180,11 +180,13 @@ function OfficePreview(props){
       title: 'Id',
       dataIndex: 'id',
       key: 'id',
+      align: 'right'
       },
       {
       title: 'Table number',
       dataIndex: 'tableNumber',
       key: 'name',
+      align: 'right'
       },{
       title: 'Delete Table',
       key: 'delete',
@@ -196,13 +198,15 @@ function OfficePreview(props){
                Delete Table
              </Button>
           },
+          align: 'center'
        }
   ]
 	const columns = [
 	  {
 		title: 'Id',
 		dataIndex: 'id',
-		key: 'id',
+    key: 'id',
+    align: 'right'
 	  },
 	  {
 		title: 'Name',
@@ -229,6 +233,7 @@ function OfficePreview(props){
              Delete Cash Register
            </Button>
         },
+        align: 'center'
 	   }, {
       title: 'Change UUID',
           key: 'uuid',
@@ -238,6 +243,7 @@ function OfficePreview(props){
                Change UUID
              </Button>
           },
+          align: 'center'
        }
   ];
   async function changeLanguage(){
@@ -349,10 +355,10 @@ function OfficePreview(props){
               <Table  bordered columns={columnsTables} dataSource={tables}  /><br/>
               <Form style = {{width: "100%", float: "left", textAlign: "center"}} name="customized_form_controls" layout="inline" onFinish={onFinishTable} validateMessages ={ {required : 'This field is required!'}}>
                 <Form.Item name="number" label="Table number" rules={[{ required:true }]}>
-                  <InputNumber style={{width: "50%", display: "inline-block", marginRight: "100%"}} min ={0}></InputNumber>
+                  <InputNumber style={{width: "100%", display: "inline-block", marginRight: "100%"}} min ={0}></InputNumber>
                 </Form.Item>
                 <Form.Item>
-                  <Button style={{width: "100%", display: "inline-block", marginLeft: "560%"}} type="primary" htmlType="submit">
+                  <Button style={{width: "100%", display: "inline-block", marginLeft: "561%"}} type="primary" htmlType="submit">
                     Add Table
                   </Button>
                 </Form.Item>

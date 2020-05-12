@@ -97,7 +97,8 @@ const columns = [
     {
       title: 'Business Id',
       dataIndex: 'id',
-      key: 'businessId'
+      key: 'businessId',
+      align: 'right'
     },  
     {
       title: 'Name',
@@ -118,7 +119,8 @@ const columns = [
         key: 'numberOffices',
         render: offices => {
             return offices.length;
-       }
+       },
+       align: 'right'
     },
     {
         title: 'Turnover',
