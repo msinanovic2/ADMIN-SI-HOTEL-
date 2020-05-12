@@ -253,6 +253,34 @@ const columns = [
 
   console.log("final current user = " + JSON.stringify(currentUser));
 
+  for(var i = 0; i < currentUser.roles.length; i++) {
+    currentUser.roles[i].key = i;
+    let description = "";
+    switch(currentUser.roles[i].rolename) {
+    case "ROLE_MANAGER":
+        description = "User of the User Management Web App";
+        break;
+    case "ROLE_WAREMAN":
+        description = "User of the Warehouse Management Web App";
+        break;
+    case "ROLE_PRW":
+        description = "User of the PR Web App";
+        break;
+    case "ROLE_CASHIER":
+        description = "Employee that uses the Cash Register Desktop App";
+        break;
+    case "ROLE_OFFICEMAN":
+        description = "Chief cashier and manager of the office";
+        break;
+    case "ROLE_BARTENDER":
+        description = "Employee that uses the Seller Mobile App";
+        break;
+    default:
+        description = "";
+    }
+    currentUser.roles[i].description = description;
+  }
+
 return (  
 
     <div>
@@ -261,7 +289,12 @@ return (
 
     <div>
 
-    <Table pagination={{ pageSize: 4 }} columns={columns} dataSource={currentUser.roles}/>
+    <Table pagination={{pageSize: 4}} columns = {columns} dataSource = {currentUser.roles}
+    expandable = {{
+        expandedRowRender: record => record.description && <p style={{ margin: 0 }}>{record.description}</p>,
+        rowExpandable: record => record.description != "",
+    }}
+    />
 
     </div>
 
@@ -300,8 +333,7 @@ return (
 
     </div>
    
-);
-   
+);   
     
 }
 
