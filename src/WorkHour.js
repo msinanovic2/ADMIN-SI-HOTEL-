@@ -32,15 +32,15 @@ async function onFinishWorkHour (values){
           .then(result => {
               console.log(result.statusCode)
             if(result.statusCode==200){
-                props.history.push("/business/"+props.match.params.bid+"/office/details/"+props.match.params.oid);
+                props.setCurrentOffice({...props.currentOffice,workDayStart:values.office.time[0].format("kk:mm"),workDayEnd:values.office.time[1].format("kk:mm")})
             }
           })
 }
     return (
     <div>
        <Form {...layout} style = {{display: "inline-block"}} layout = "inline" name="customized_form_controls" onFinish={onFinishWorkHour} validateMessages ={ {required : 'This field is required!'}}>
-       <Form.Item style = {{float: "left"}} name={['office', 'time']} label="Working hours: " rules={[{required: true,}]}>
-          <RangePicker/>
+       <Form.Item style = {{float: "left"}} name={['office', 'time']}  label="Working hours: " rules={[{required: true,}]}>
+          <RangePicker format={"HH:mm"}/>
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">

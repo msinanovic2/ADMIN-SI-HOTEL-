@@ -1,11 +1,15 @@
 import React from 'react'
-import { Form, Input, Button ,Switch} from 'antd';
+import { Form, Input, Button ,Switch, message} from 'antd';
 import {AuthService} from './AuthService'
 import { InputNumber } from 'antd';
 
 function CashRegisterLimit(props){
     const layout = {labelCol: {span: 15,},wrapperCol: {span: 26,},};
     function onFinish(values){
+    if(values.maxNumber<props.currentOffice.cashRegisters.length){
+      message.error("Cash Register Limit is lower than current number of Cash Registers!")
+      return;
+    }
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization",AuthService.currentHeaderValue);
@@ -23,7 +27,7 @@ function CashRegisterLimit(props){
           .then(result => {
               console.log(result)
             if(result.statusCode==200){
-                props.history.push("/business/"+props.match.params.bid+"/office/details/"+props.match.params.oid);
+                props.setCurrentOffice({...props.currentOffice,maxNumberCashRegisters:values.maxNumber})
             }
           })
     }
