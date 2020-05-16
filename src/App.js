@@ -44,7 +44,7 @@ const SERVER_URL = 'log-server-si.herokuapp.com/ws';
 let stompClient;
 
 function App() {
-
+  const [notifShow,setNotifShow] = useState(0)
   const [response, setResponse] = useState([]);
   const [message, setMessage] = useState('');
   const [currentUser,setCurrentUser] = useState(null);
@@ -63,6 +63,7 @@ function App() {
       stompClient.subscribe(`/topic/admin`, msg => {
         const data = JSON.parse(msg.body);
         notif =  new Notification(data.payload.description,{})
+        setNotifShow(1);
         setResponse(res => [data, ...res]);
       });
     }, err => console.error(err + "Greska"));
@@ -73,10 +74,10 @@ function App() {
   
     return (<div>           
 
-              <Router  history= {history}>
+              <Router  history= {history} setNotifShow={setNotifShow}>
                 <Layout>
                   <Header className="headerLayout"> 
-                    { currentUser?<Nav LoggedIn = {true} history={history}/>:<Nav LoggedIn = {false} history = {history}/> }
+                    { currentUser?<Nav LoggedIn = {true} history={history} notifShow={notifShow}/>:<Nav LoggedIn = {false} history = {history}/> }
                   </Header>
                   <Content>
                     <div className="App">
@@ -92,7 +93,7 @@ function App() {
                       <PrivateRoute path= "/user/details/:id" component = {UserPreview}/>
                       <PrivateRoute path= "/user/password/:id" component = {UserPassword}/>  
                       <PrivateRoute path = "/merchant/add" component = {MerchantAdd } history ={history}/>
-                      <PrivateRoute path ="/notifications" component = {NotificationsList}/>
+                      <PrivateRoute path ="/notifications" component = {NotificationsList}  setNotifShow = {setNotifShow}/>
                       <PrivateRoute path = "/changepassword"  component = {ChangePassword}/>
                       <PrivateRoute path = "/user/roles/:id" component = {UserRoles}/>
                       <PrivateRoute path = "/business/:bid/office/:oid/cashregister/add" component= {CashRegisterAdd}/>

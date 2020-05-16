@@ -1,5 +1,5 @@
 import React from 'react'
-import { PageHeader, Button } from 'antd';
+import { PageHeader, Button, Badge } from 'antd';
 import { Link } from 'react-router-dom';
 import { AuthService} from './AuthService'
 class Nav extends React.Component{
@@ -16,7 +16,10 @@ class Nav extends React.Component{
                         <Link className="linkic" to="/business" key= "Business"> Business</Link>,
                         <Link className="linkic" to="/users" key = "Users"> User</Link>,
                         <Link className="linkic" to="/" key="home"> Home</Link>,
-                        <Link className="linkic" to ="/notifications" key = "notifications">Notifications</Link>,
+                        <Badge dot count={this.props.notifShow}>
+                        <Link className="linkic" to ="/notifications" key = "notifications">Notifications                        
+                        </Link>
+                        </Badge>,
                         <Link className="linkic" to="/business/turnover">Turnover</Link>,
                         <Button key="1" type="primary"  onClick = {(event)=>{
                             AuthService.logout();

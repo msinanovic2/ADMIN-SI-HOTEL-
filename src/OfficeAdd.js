@@ -11,15 +11,17 @@ function OfficeAdd(props)
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append("Authorization",AuthService.currentHeaderValue);
         var raw = JSON.stringify({
-            "email":values.office.email,
-            "city":values.office.city,
-            "address":values.office.address,
-            "country":values.office.country,
-            "phoneNumber":values.office.phoneNumber,
-            "workDayStart":values.office.time[0].format("kk:mm"),
-            "workDayEnd":values.office.time[1].format("kk:mm")
+            email:values.office.email,
+            city:values.office.city,
+            address:values.office.address,
+            country:values.office.country,
+            phoneNumber:values.office.phoneNumber,
+            workDayStart:values.office.time[0].format("kk:mm"),
+            workDayEnd:values.office.time[1].format("kk:mm"),
+            serverUsername:values.office.serverUsername,
+            serverPassword:values.office.serverPassword
+
         });
-        console.log(raw);
         var requestOptions = {
           method: 'POST',
           headers: myHeaders,
@@ -75,7 +77,7 @@ const layout = {
     
 
 
-    <div style = {{width: "30%", position: "absolute", top: "50%", left: "50%", marginTop: "-14%", marginLeft: "-18%"}}>
+    <div style = {{width: "30%", position: "absolute", top: "42%", left: "50%", marginTop: "-14%", marginLeft: "-18%"}}>
 
     <div>
       <h1 style = {{marginRight: "-7%"}}>Office Data</h1>
@@ -84,6 +86,13 @@ const layout = {
     <br></br>
       
       <Form {...layout} label="Add Office" name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
+        <Form.Item name={['office', 'serverUsername']} label="Username" rules={[{required:true}]}>
+          <Input />
+        </Form.Item>
+        <Form.Item name={['office', 'serverPassword']} label="Password" rules={[{required:true,message: 'Please input your password!',
+              min:6,message:"Password must be at least 6 characters",}]}>
+          <Input.Password />
+        </Form.Item>
         <Form.Item name={['office', 'email']} label="Email" rules={[ { type: 'email',},{required:true}]}>
           <Input />
         </Form.Item>
