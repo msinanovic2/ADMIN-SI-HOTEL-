@@ -1,4 +1,4 @@
-import { Descriptions, Badge, Table, Button, Input ,Form,Menu, Dropdown ,InputNumber, Modal} from 'antd';
+import { Descriptions, Badge, Table, Button, Input ,Form,Menu, Dropdown ,InputNumber, Modal, message} from 'antd';
 import { DownOutlined, EditOutlined } from '@ant-design/icons';
 import DescriptionsItem from 'antd/lib/descriptions/Item';
 import CashRegisterLimit from './CashRegisterLimit';
@@ -14,7 +14,7 @@ function OfficePreview(props){
 
   const [editLimitVisible,setLimitVisible] = useState(false);
   const [editWorkHoursVisible,setWorkHoursVisible] = useState(false);
-
+  const [placeName,setPlaceName] = useState("");
     useEffect(()=>{
       getOffice();
       getTables();
@@ -93,7 +93,7 @@ function OfficePreview(props){
         headers: myHeaders,
     };
     const data = await fetch(`https://main-server-si.herokuapp.com/api/business/${props.match.params.bid}/offices/${props.match.params.oid}/tables/${table.id}`, requestOptions)
-    let tables2 = tables.filter(x=>x.tableNumber!==table.tableNumber)
+    let tables2 = tables.filter(x=>x.tableName!==table.tableName)
     setTables(tables2);
   }
   async function  getOffice()  {
@@ -111,6 +111,7 @@ function OfficePreview(props){
             if(x.id == props.match.params.oid)
                 setCurrentOffice(x);
         })
+        setPlaceName(business.placeName)
   }
   async function getTables(){
 
@@ -150,11 +151,11 @@ function OfficePreview(props){
   async function onFinishTable(values){
     let postojiStol = false
     tables.forEach(table => {
-      if(table.tableNumber == values.number)
+      if(table.tableName == values.number)
         postojiStol = true;
     });
     if(postojiStol){
-      alert("Table nubmer must be unique!");
+      message.error("Table name must be unique!");
       return;
     }
     const table =  await addTable(values,props.match.params.bid,props.match.params.oid);
@@ -168,7 +169,7 @@ function OfficePreview(props){
       var requestOptions = {
         method: 'POST',
         headers: myHeaders,
-        body: JSON.stringify({tableNumber:values.number})
+        body: JSON.stringify({tableName:values.number})
     };
     const data = await fetch(`https://main-server-si.herokuapp.com/api/business/${BusinessId}/offices/${OfficeId}/tables`, requestOptions)
     const table = await data.json();
@@ -183,19 +184,19 @@ function OfficePreview(props){
       align: 'right'
       },
       {
-      title: 'Table number',
-      dataIndex: 'tableNumber',
+      title: 'Name',
+      dataIndex: 'tableName',
       key: 'name',
       align: 'right'
       },{
-      title: 'Delete Table',
+      title: 'Delete',
       key: 'delete',
       render: (text, table)=>{
              return <Button type={table ? "primary":"disabled"} onClick={(event)=>{
-              const check = window.confirm("Are you sure you want to permanently remove table?");
+              const check = window.confirm("Are you sure you want to permanently remove item?");
               if(check)
                deleteTable({...table})}} danger> 
-               Delete Table
+               Delete
              </Button>
           },
           align: 'center'
@@ -351,17 +352,17 @@ function OfficePreview(props){
           </TabPane>
           
 
-          <TabPane className="tabPane" tab="Tables" key="3" disabled ={!restaurantFeature?true:false}>
+          <TabPane className="tabPane" tab={placeName} key="3" disabled ={!restaurantFeature?true:false}>
               <h3>Tables</h3>
               <div>
               <Table  bordered columns={columnsTables} dataSource={tables}  /><br/>
               <Form style = {{width: "100%", float: "left", textAlign: "center"}} name="customized_form_controls" layout="inline" onFinish={onFinishTable} validateMessages ={ {required : 'This field is required!'}}>
-                <Form.Item name="number" label="Table number" rules={[{ required:true }]}>
-                  <InputNumber style={{width: "100%", display: "inline-block", marginRight: "100%"}} min ={0}></InputNumber>
+                <Form.Item name="number" label="Name" rules={[{ required:true }]}>
+                  <Input style={{width: "100%", display: "inline-block", marginRight: "100%"}} min ={0}></Input>
                 </Form.Item>
                 <Form.Item>
                   <Button style={{width: "100%", display: "inline-block", marginRight: "-706%"}} type="primary" htmlType="submit">
-                    Add Table
+                    Add
                   </Button>
                 </Form.Item>
               </Form>

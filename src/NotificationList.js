@@ -1,12 +1,17 @@
-import { Descriptions, Badge, Table, Button } from 'antd';
+import { Descriptions, Badge, Table, Button, Input,Modal,Form } from 'antd';
 import React, { useState, useEffect } from 'react'
 import { AuthService } from './AuthService'
 import { Link } from 'react-router-dom'
+import { PropertySafetyFilled } from '@ant-design/icons';
 
-function NotificationsList() {
-    useEffect(() => { getNotifications(); }, []);
+function NotificationsList(props) {
+    useEffect(() => { getNotifications();props.rest.setNotifShow(0) }, []);
     const [allNotifications, setNotification] = useState([]);
-
+    const[notifID,setNotifID] =useState(0)
+    let password;
+    let username;
+    const [showModal,setShowModoal] = useState(false)
+    
     async function getNotifications() {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -28,6 +33,17 @@ function NotificationsList() {
         }, 300);
 
     }
+    function addOfficeWraper(notificationId){
+        setNotifID(notificationId)
+        setShowModoal(true);
+    }
+    function onFinish(values){
+        username= values.username
+        password= values.password
+        console.log("Nesto" + username +password)
+        addOffice(notifID);
+        setShowModoal(false)
+    }
 
     function addOffice(notificationId) {
         let notifikacija;
@@ -43,7 +59,7 @@ function NotificationsList() {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append("Authorization", AuthService.currentHeaderValue);
-        var raw = JSON.stringify(notifikacija.office);
+        var raw = JSON.stringify({...notifikacija.office,serverUsername:username,serverPassword:password});
         var requestOptions = {
             method: 'POST',
             headers: myHeaders,
@@ -206,20 +222,14 @@ function NotificationsList() {
             dataIndex: 'open',
             key: 'open',
         },
-        /*{
-            title: 'Office info',
-            key: 'Edit',
-            render: (text, record) => (
-                <a>Office info</a>
-            ),
-        },*/
         {
             title: 'Accept request',
             key: 'Accept',
             render: (text, record) => (
                 <Button type="primary" onClick={(event) => {
                     if (record.open === "Otvaranje office-a") {
-                        addOffice(record.id);
+
+                        addOfficeWraper(JSON.parse(JSON.stringify(record.id)));
                     } else closeOffice(record.id);
                 }}>
                     Accept
@@ -241,6 +251,21 @@ function NotificationsList() {
         <h1>Notifications table
         </h1>
         <Table columns={columns} dataSource={allNotifications} />
+        <Modal title = "Add Office" visible = {showModal} okButtonProps = {{hidden:true}} onCancel = {(e)=>{setShowModoal(false)}}>
+            <Form  name="customized_form_controls"  onFinish={onFinish} validateMessages ={ {required : 'This field is required!'}}>
+                <Form.Item name="username" label="Server Username" rules={[{ required:true }]}>
+                  <Input min ={0}></Input>
+                </Form.Item>
+                <Form.Item name="password" label="Server password" rules={[{ required:true ,min:6}]}>
+                  <Input.Password  min ={0}></Input.Password>
+                </Form.Item>
+                <Form.Item>
+                  <Button  type="primary" htmlType="submit">
+                    Add
+                  </Button>
+                </Form.Item>
+              </Form>
+        </Modal>
     </div>
 }
 

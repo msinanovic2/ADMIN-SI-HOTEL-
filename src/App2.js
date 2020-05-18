@@ -43,31 +43,13 @@ const { Header, Footer, Sider, Content } = Layout;
 const SERVER_URL = 'log-server-si.herokuapp.com/ws';
 let stompClient;
 
-function App() {
+function App2() {
   const [notifShow,setNotifShow] = useState(0)
   const [response, setResponse] = useState([]);
   const [message, setMessage] = useState('');
   const [currentUser,setCurrentUser] = useState(null);
   useEffect(()=>{
-    Notification.requestPermission();
-    var notif;
     AuthService.currentUser.subscribe(x =>setCurrentUser(x));
-    //notifications
-    const socket = new SockJS("https://log-server-si.herokuapp.com/ws");
-    stompClient = Stomp.over(socket);
-    // connect the stomp client
-    // first arg is headers,
-    // second arg is onConnected callback,
-    // third arg is onError callback
-    stompClient.connect({}, () => {
-      stompClient.subscribe(`/topic/admin`, msg => {
-        const data = JSON.parse(msg.body);
-        notif =  new Notification(data.payload.description,{})
-        setNotifShow(1);
-        setResponse(res => [data, ...res]);
-      });
-    }, err => console.error(err + "Greska"));
-
   },[])
   
 
@@ -115,5 +97,5 @@ function App() {
 
 }
 
-export default App;
+export default App2;
 
